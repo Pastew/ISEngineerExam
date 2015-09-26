@@ -6,10 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pastew.isengineerexam.answers.Answer;
 import com.pastew.isengineerexam.answers.Answers;
 import com.pastew.isengineerexam.answers.AnswersParser;
 
@@ -18,7 +16,7 @@ import java.io.IOException;
 
 public class MainActivity extends Activity {
 
-    private ImageView question, answerA, answerB, answerC;
+    private ImageView questionView, answerAView, answerBView, answerCView;
     private int currentQuestion;
     private Answers answers;
 
@@ -39,14 +37,14 @@ public class MainActivity extends Activity {
     }
 
     private void setupUI() {
-        question = (ImageView) findViewById(R.id.question);
-        answerA = (ImageView) findViewById(R.id.answer_a);
-        answerB = (ImageView) findViewById(R.id.answer_b);
-        answerC = (ImageView) findViewById(R.id.answer_c);
+        questionView = (ImageView) findViewById(R.id.question);
+        answerAView = (ImageView) findViewById(R.id.answer_a);
+        answerBView = (ImageView) findViewById(R.id.answer_b);
+        answerCView = (ImageView) findViewById(R.id.answer_c);
 
-        answerA.setOnClickListener(questionClickListener);
-        answerB.setOnClickListener(questionClickListener);
-        answerC.setOnClickListener(questionClickListener);
+        answerAView.setOnClickListener(questionClickListener);
+        answerBView.setOnClickListener(questionClickListener);
+        answerCView.setOnClickListener(questionClickListener);
     }
 
     View.OnClickListener questionClickListener = new View.OnClickListener() {
@@ -80,11 +78,36 @@ public class MainActivity extends Activity {
     }
 
     public void debug(View v) {
-        TextView debugTV = (TextView) v;
-
         currentQuestion++;
+        showQuestion(currentQuestion);
+    }
 
-        Answer answer = answers.get(currentQuestion);
-        debugTV.setText(currentQuestion + answer.toString());
+    /**
+     * Loads images for questionNumber and shows it on screen
+     */
+    private void showQuestion(int questionNumber) {
+        questionView.setImageResource(getDrawableId(questionNumber, 'p'));
+        answerAView.setImageResource(getDrawableId(questionNumber, 'a'));
+        answerBView.setImageResource(getDrawableId(questionNumber, 'b'));
+        answerCView.setImageResource(getDrawableId(questionNumber, 'c'));
+    }
+
+    /**
+     *
+     * @param questionNumber number of the question
+     * @param type p question <br/>
+     *             a A answer <br/>
+     *             b B answer <br/>
+     *             c C answer <br/>
+     * @return id of the drawable (for example R.drawable.img1_p
+     */
+    private int getDrawableId(int questionNumber, char type) {
+        StringBuilder fileName = new StringBuilder();
+        fileName.append("img");
+        fileName.append(questionNumber);
+        fileName.append("_");
+        fileName.append(type);
+
+        return getResources().getIdentifier(fileName.toString() , "drawable", getPackageName());
     }
 }
