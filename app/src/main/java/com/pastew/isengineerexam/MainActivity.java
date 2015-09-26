@@ -1,26 +1,44 @@
 package com.pastew.isengineerexam;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.media.Image;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.pastew.isengineerexam.answers.Answer;
+import com.pastew.isengineerexam.answers.Answers;
+import com.pastew.isengineerexam.answers.AnswersParser;
+
+import java.io.IOException;
 
 
 public class MainActivity extends Activity {
 
-    ImageView question, answerA, answerB, answerC;
+    private ImageView question, answerA, answerB, answerC;
+    private int currentQuestion;
+    private Answers answers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        try {
+            answers = AnswersParser.readAnswers(this.getAssets().open("answers.txt"));
+        } catch (IOException e) {
+            Toast.makeText(this, getString(R.string.cant_load_answers), Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+        setContentView(R.layout.activity_main);
+        setupUI();
+        currentQuestion = 0;
+    }
+
+    private void setupUI() {
         question = (ImageView) findViewById(R.id.question);
         answerA = (ImageView) findViewById(R.id.answer_a);
         answerB = (ImageView) findViewById(R.id.answer_b);
@@ -59,5 +77,14 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void debug(View v) {
+        TextView debugTV = (TextView) v;
+
+        currentQuestion++;
+
+        Answer answer = answers.get(currentQuestion);
+        debugTV.setText(currentQuestion + answer.toString());
     }
 }
