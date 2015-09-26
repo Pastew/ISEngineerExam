@@ -1,18 +1,43 @@
 package com.pastew.isengineerexam;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+
+    ImageView question, answerA, answerB, answerC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        question = (ImageView) findViewById(R.id.question);
+        answerA = (ImageView) findViewById(R.id.answer_a);
+        answerB = (ImageView) findViewById(R.id.answer_b);
+        answerC = (ImageView) findViewById(R.id.answer_c);
+
+        answerA.setOnClickListener(questionClickListener);
+        answerB.setOnClickListener(questionClickListener);
+        answerC.setOnClickListener(questionClickListener);
     }
+
+    View.OnClickListener questionClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ImageView answer = (ImageView) v;
+            answer.setBackgroundColor(getResources().getColor(R.color.ok));
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

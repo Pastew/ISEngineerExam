@@ -2,15 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:orientation="vertical" >
+    android:padding="2dp"
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/img1.p" />
+        android:src="@drawable/img131_p"/>
 
+    <ImageView
+        android:id="@+id/answer_a"
+        style="@style/answer"
+        android:src="@drawable/img100_a" />
+
+    <ImageView
+        android:id="@+id/answer_b"
+        style="@style/answer"
+        android:src="@drawable/img145_b" />
+
+    <ImageView
+        android:id="@+id/answer_c"
+        style="@style/answer"
+        android:src="@drawable/img112_c" />
 
 </LinearLayout>
