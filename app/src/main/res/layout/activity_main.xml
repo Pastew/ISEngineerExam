@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="2dp"
@@ -10,30 +10,43 @@
         android:id="@+id/question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/img131_p"/>
+        android:src="@drawable/img131_p"
+        android:layout_above="@+id/linearLayout" />
 
-    <ImageView
-        android:id="@+id/answer_a"
-        style="@style/answer"
-        android:src="@drawable/img100_a" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="3"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linearLayout">
+        <ImageView
+            android:id="@+id/answer_a"
+            style="@style/answer"
+            android:src="@drawable/img100_a" />
 
-    <ImageView
-        android:id="@+id/answer_b"
-        style="@style/answer"
-        android:src="@drawable/img145_b" />
+        <ImageView
+            android:id="@+id/answer_b"
+            style="@style/answer"
+            android:src="@drawable/img142_b" />
 
-    <ImageView
-        android:id="@+id/answer_c"
-        style="@style/answer"
-        android:src="@drawable/img112_c" />
-
+        <ImageView
+            android:id="@+id/answer_c"
+            style="@style/answer"
+            android:src="@drawable/img118_c"/>
+    </LinearLayout>
     <TextView
+        android:id="@+id/debug"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Debug"
-        android:id="@+id/textView"
         android:onClick="debug"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/question"
+        android:layout_alignRight="@+id/question"
+        android:layout_alignEnd="@+id/question" />
+
+</RelativeLayout>
 
 
-</LinearLayout>
+
