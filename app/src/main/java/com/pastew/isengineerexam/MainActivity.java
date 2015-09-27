@@ -61,6 +61,14 @@ public class MainActivity extends Activity {
         ANSWERS[0] = answerAView;
         ANSWERS[1] = answerBView;
         ANSWERS[2] = answerCView;
+
+        // next question after click anywhere
+        findViewById(R.id.main_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showQuestion(currentQuestion);
+            }
+        });
     }
 
 
@@ -71,7 +79,7 @@ public class MainActivity extends Activity {
 
             // disable answers buttons
             for(View view : ANSWERS)
-                view.setEnabled(false);
+                view.setClickable(false);
 
 
             // user answer is correct
@@ -94,8 +102,10 @@ public class MainActivity extends Activity {
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.wrong));
             }
 
-            // if correct answer is unknown:
+            ++currentQuestion;
+            findViewById(R.id.main_layout).setClickable(true);
 
+            /* // delay instead of click for next question
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -103,6 +113,7 @@ public class MainActivity extends Activity {
                     showQuestion(++currentQuestion);
                 }
             }, 1000);
+            */
         }
     };
 
@@ -137,6 +148,8 @@ public class MainActivity extends Activity {
      * Loads images for questionNumber and shows it on screen
      */
     private void showQuestion(int questionNumber) {
+        findViewById(R.id.main_layout).setClickable(false);
+
         ((TextView)findViewById(R.id.questionID)).setText("id: " + questionNumber);
 
         questionView.setImageResource(getDrawableId(questionNumber, 'p'));
@@ -146,7 +159,7 @@ public class MainActivity extends Activity {
 
         for(View view : ANSWERS) {
             view.setBackgroundColor(getResources().getColor(R.color.inactive));
-            view.setEnabled(true);
+            view.setClickable(true);
         }
     }
 
