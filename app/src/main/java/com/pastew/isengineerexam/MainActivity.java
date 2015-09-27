@@ -15,7 +15,6 @@ import com.pastew.isengineerexam.answers.Answers;
 import com.pastew.isengineerexam.answers.AnswersParser;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 
 public class MainActivity extends Activity {
@@ -70,25 +69,32 @@ public class MainActivity extends Activity {
         public void onClick(View v) {
             ImageView userAnswer = (ImageView)v;
 
-            // if one of answer is selected disable answers
-            if(Arrays.asList(ANSWERS).contains(v))
-                for(View view : ANSWERS)
-                        view.setEnabled(false);
+            // disable answers buttons
+            for(View view : ANSWERS)
+                view.setEnabled(false);
+
 
             // user answer is correct
-            if(v.getTag().equals(answers.get(currentQuestion)))
-                userAnswer.setBackgroundColor(getResources().getColor(R.color.ok));
+            if(v.getTag().equals(answers.get(currentQuestion))) {
+                userAnswer.setBackgroundColor(getResources().getColor(R.color.correct));
+            }
+            // correct answer is unknown
+            else if(answers.get(currentQuestion).equals(Answer.UNKNOWN)) {
+                userAnswer.setBackgroundColor(getResources().getColor(R.color.unknown));
 
-            // or its wrong
-            else{
-                userAnswer.setBackgroundColor(getResources().getColor(R.color.wrong));
-
+                //user answer is wrong
+            }else{
                 // show correct answer
                 for(View view : ANSWERS)
-                    if(view.getTag().equals(answers.get(currentQuestion)))
-                        view.setBackgroundColor(getResources().getColor(R.color.ok));
+                    if(view.getTag().equals(answers.get(currentQuestion))) {
+                        view.setBackgroundColor(getResources().getColor(R.color.correct));
+                    }
 
+                // highlight users wrong answer
+                userAnswer.setBackgroundColor(getResources().getColor(R.color.wrong));
             }
+
+            // if correct answer is unknown:
 
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
