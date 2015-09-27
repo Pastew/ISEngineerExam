@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pastew.isengineerexam.answers.Answer;
@@ -38,10 +39,12 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
         setupUI();
-        currentQuestion = 1;
+        currentQuestion = 315;
     }
 
     private void setupUI() {
+        ((TextView)findViewById(R.id.questionID)).setText("id: " + currentQuestion);
+
         questionView = (ImageView) findViewById(R.id.question);
         answerAView = (ImageView) findViewById(R.id.answer_a);
         answerBView = (ImageView) findViewById(R.id.answer_b);
@@ -128,6 +131,8 @@ public class MainActivity extends Activity {
      * Loads images for questionNumber and shows it on screen
      */
     private void showQuestion(int questionNumber) {
+        ((TextView)findViewById(R.id.questionID)).setText("id: " + questionNumber);
+
         questionView.setImageResource(getDrawableId(questionNumber, 'p'));
         answerAView.setImageResource(getDrawableId(questionNumber, 'a'));
         answerBView.setImageResource(getDrawableId(questionNumber, 'b'));
