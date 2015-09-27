@@ -10,7 +10,7 @@
         android:id="@+id/question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/img131_p"
+        android:src="@drawable/img1_p"
         android:layout_above="@+id/linearLayout" />
 
     <LinearLayout
@@ -23,17 +23,17 @@
         <ImageView
             android:id="@+id/answer_a"
             style="@style/answer"
-            android:src="@drawable/img100_a" />
+            android:src="@drawable/img1_a" />
 
         <ImageView
             android:id="@+id/answer_b"
             style="@style/answer"
-            android:src="@drawable/img142_b" />
+            android:src="@drawable/img1_b" />
 
         <ImageView
             android:id="@+id/answer_c"
             style="@style/answer"
-            android:src="@drawable/img118_c"/>
+            android:src="@drawable/img1_c"/>
     </LinearLayout>
     <TextView
         android:id="@+id/debug"

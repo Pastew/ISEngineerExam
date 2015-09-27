@@ -2,21 +2,26 @@ package com.pastew.isengineerexam;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.pastew.isengineerexam.answers.Answer;
 import com.pastew.isengineerexam.answers.Answers;
 import com.pastew.isengineerexam.answers.AnswersParser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class MainActivity extends Activity {
 
     private ImageView questionView, answerAView, answerBView, answerCView;
+    private View ANSWERS[];
+
     private int currentQuestion;
     private Answers answers;
 
@@ -33,7 +38,7 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
         setupUI();
-        currentQuestion = 0;
+        currentQuestion = 1;
     }
 
     private void setupUI() {
@@ -42,16 +47,53 @@ public class MainActivity extends Activity {
         answerBView = (ImageView) findViewById(R.id.answer_b);
         answerCView = (ImageView) findViewById(R.id.answer_c);
 
-        answerAView.setOnClickListener(questionClickListener);
-        answerBView.setOnClickListener(questionClickListener);
-        answerCView.setOnClickListener(questionClickListener);
+        answerAView.setTag(Answer.A);
+        answerBView.setTag(Answer.B);
+        answerCView.setTag(Answer.C);
+
+        answerAView.setOnClickListener(answerClickListener);
+        answerBView.setOnClickListener(answerClickListener);
+        answerCView.setOnClickListener(answerClickListener);
+
+        ANSWERS = new View[3];
+        ANSWERS[0] = answerAView;
+        ANSWERS[1] = answerBView;
+        ANSWERS[2] = answerCView;
     }
 
-    View.OnClickListener questionClickListener = new View.OnClickListener() {
+
+    View.OnClickListener answerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ImageView answer = (ImageView) v;
-            answer.setBackgroundColor(getResources().getColor(R.color.ok));
+            ImageView userAnswer = (ImageView)v;
+
+            // if one of answer is selected disable answers
+            if(Arrays.asList(ANSWERS).contains(v))
+                for(View view : ANSWERS)
+                        view.setEnabled(false);
+
+            // user answer is correct
+            if(v.getTag().equals(answers.get(currentQuestion)))
+                userAnswer.setBackgroundColor(getResources().getColor(R.color.ok));
+
+            // or its wrong
+            else{
+                userAnswer.setBackgroundColor(getResources().getColor(R.color.wrong));
+
+                // show correct answer
+                for(View view : ANSWERS)
+                    if(view.getTag().equals(answers.get(currentQuestion)))
+                        view.setBackgroundColor(getResources().getColor(R.color.ok));
+
+            }
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showQuestion(++currentQuestion);
+                }
+            }, 1000);
         }
     };
 
@@ -90,6 +132,11 @@ public class MainActivity extends Activity {
         answerAView.setImageResource(getDrawableId(questionNumber, 'a'));
         answerBView.setImageResource(getDrawableId(questionNumber, 'b'));
         answerCView.setImageResource(getDrawableId(questionNumber, 'c'));
+
+        for(View view : ANSWERS) {
+            view.setBackgroundColor(getResources().getColor(R.color.inactive));
+            view.setEnabled(true);
+        }
     }
 
     /**
