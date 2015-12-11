@@ -5,4 +5,5 @@
     <color name="inactive">#C2F0FF</color>
     <color name="wrong">#E30000</color>
     <color name="unknown">#fded0c</color>
+    <color name="score">#009933</color>
 </resources>

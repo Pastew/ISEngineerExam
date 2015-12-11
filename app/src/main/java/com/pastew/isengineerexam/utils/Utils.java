@@ -16,7 +16,7 @@ public class Utils {
      * @return array of random elements from range @left to @right (including left and right)
      */
     public static int[] getRandomArray(int arrayLength, int left, int right) {
-        if(right > arrayLength)
+        if(arrayLength > right-left+1)
             arrayLength = right-left+1;
 
         HashSet<Integer> set = new HashSet<>();

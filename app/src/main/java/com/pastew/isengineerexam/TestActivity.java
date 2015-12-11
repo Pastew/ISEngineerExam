@@ -30,13 +30,14 @@ public class TestActivity extends Activity {
     private int[] questionsIds;
     private int currentQuestion;
     private Answers answers;
+    private int score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadAllAnswers();
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_test);
         setupUI();
 
         Intent intent = getIntent();
@@ -52,6 +53,7 @@ public class TestActivity extends Activity {
 
             startRandomRangeTest(questionsNumber, startQuestionID, endQuestionID);
             currentQuestion = 0;
+            score = 0;
         }
 
         showQuestion(questionsIds[currentQuestion]);
@@ -118,6 +120,8 @@ public class TestActivity extends Activity {
             // user answer is correct
             if(v.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.correct));
+                ++score;
+                ((TextView)findViewById(R.id.score_tv)).setText(Integer.toString(score));
             }
             // correct answer is unknown
             else if(answers.get(questionsIds[currentQuestion]).equals(Answer.UNKNOWN)) {
@@ -191,6 +195,8 @@ public class TestActivity extends Activity {
         findViewById(R.id.main_layout).setClickable(false);
 
         ((TextView)findViewById(R.id.questionID)).setText("id: " + questionNumber);
+        ((TextView)findViewById(R.id.current_question_tv)).setText(currentQuestion+1 + "/" + questionsIds.length);
+
 
         questionView.setImageResource(getDrawableId(questionNumber, 'p'));
 
