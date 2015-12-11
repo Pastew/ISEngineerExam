@@ -1,4 +1,4 @@
-package com.pastew.isengineerexam.answers;
+package com.pastew.isengineerexam.data;
 
 import java.util.ArrayList;
 
@@ -13,5 +13,9 @@ public class Answers {
 
     public Answer get(int index){
         return answers.get(index - 1);
+    }
+
+    public int size() {
+        return answers.size();
     }
 }

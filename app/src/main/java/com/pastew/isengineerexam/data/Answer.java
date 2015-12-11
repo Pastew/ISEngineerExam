@@ -1,4 +1,4 @@
-package com.pastew.isengineerexam.answers;
+package com.pastew.isengineerexam.data;
 
 public enum Answer {
     A("a"),

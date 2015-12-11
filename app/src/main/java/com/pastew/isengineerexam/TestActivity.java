@@ -1,48 +1,81 @@
 package com.pastew.isengineerexam;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pastew.isengineerexam.answers.Answer;
-import com.pastew.isengineerexam.answers.Answers;
-import com.pastew.isengineerexam.answers.AnswersParser;
+import com.pastew.isengineerexam.data.Answer;
+import com.pastew.isengineerexam.data.Answers;
+import com.pastew.isengineerexam.data.FileParser;
+import com.pastew.isengineerexam.utils.Utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
-public class MainActivity extends Activity {
+public class TestActivity extends Activity {
 
     private ImageView questionView, answerAView, answerBView, answerCView;
-    private View ANSWERS[];
+    private List<View> answersViewList;
 
+    private int[] questionsIds;
     private int currentQuestion;
     private Answers answers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadAllAnswers();
 
+        setContentView(R.layout.activity_main);
+        setupUI();
+
+        Intent intent = getIntent();
+        String mode = intent.getStringExtra(MenuActivity.MODE);
+
+        if(mode.equals(MenuActivity.RANDOM_TEST_MODE))
+            startRandomTest(intent.getIntExtra(MenuActivity.QUESTIONS_NUMBER, 10));
+
+        if(mode.equals(MenuActivity.RANDOM_RANGE_TEST_MODE)) {
+            int questionsNumber = intent.getIntExtra(MenuActivity.QUESTIONS_NUMBER, 10);
+            int startQuestionID = intent.getIntExtra(MenuActivity.START_QUESTION_ID, 1);
+            int endQuestionID = intent.getIntExtra(MenuActivity.END_QUESTION_ID, 20);
+
+            startRandomRangeTest(questionsNumber, startQuestionID, endQuestionID);
+            currentQuestion = 0;
+        }
+
+        showQuestion(questionsIds[currentQuestion]);
+    }
+
+    private void startRandomRangeTest(int questionsNumber, int startQuestionID, int endQuestionID) {
+        questionsIds = Utils.getRandomArray(questionsNumber, startQuestionID, endQuestionID);
+    }
+
+    private void startRandomTest(int questionsNumber) {
+        questionsIds = Utils.getRandomArray(questionsNumber, 1, answers.size());
+    }
+
+    private void loadAllAnswers() {
         try {
-            answers = AnswersParser.readAnswers(this.getAssets().open("answers.txt"));
+            answers = FileParser.readAnswers(this.getAssets().open("answers.txt"));
         } catch (IOException e) {
             Toast.makeText(this, getString(R.string.cant_load_answers), Toast.LENGTH_LONG).show();
             finish();
         }
-
-        setContentView(R.layout.activity_main);
-        setupUI();
-        currentQuestion = 315;
     }
 
     private void setupUI() {
-        ((TextView)findViewById(R.id.questionID)).setText("id: " + currentQuestion);
+        ((TextView)findViewById(R.id.questionID)).setText("id: " + Integer.toString(currentQuestion));
 
         questionView = (ImageView) findViewById(R.id.question);
         answerAView = (ImageView) findViewById(R.id.answer_a);
@@ -53,24 +86,25 @@ public class MainActivity extends Activity {
         answerBView.setTag(Answer.B);
         answerCView.setTag(Answer.C);
 
-        answerAView.setOnClickListener(answerClickListener);
-        answerBView.setOnClickListener(answerClickListener);
-        answerCView.setOnClickListener(answerClickListener);
+        answersViewList = new ArrayList<>();
+        answersViewList.add(answerAView);
+        answersViewList.add(answerBView);
+        answersViewList.add(answerCView);
 
-        ANSWERS = new View[3];
-        ANSWERS[0] = answerAView;
-        ANSWERS[1] = answerBView;
-        ANSWERS[2] = answerCView;
+        Collections.shuffle(answersViewList);
+
+        for(View v : answersViewList)
+            v.setOnClickListener(answerClickListener);
 
         // next question after click anywhere
         findViewById(R.id.main_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showQuestion(currentQuestion);
+                showQuestion(questionsIds[currentQuestion]);
             }
         });
-    }
 
+    }
 
     View.OnClickListener answerClickListener = new View.OnClickListener() {
         @Override
@@ -78,23 +112,22 @@ public class MainActivity extends Activity {
             ImageView userAnswer = (ImageView)v;
 
             // disable answers buttons
-            for(View view : ANSWERS)
+            for(View view : answersViewList)
                 view.setClickable(false);
 
-
             // user answer is correct
-            if(v.getTag().equals(answers.get(currentQuestion))) {
+            if(v.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.correct));
             }
             // correct answer is unknown
-            else if(answers.get(currentQuestion).equals(Answer.UNKNOWN)) {
+            else if(answers.get(questionsIds[currentQuestion]).equals(Answer.UNKNOWN)) {
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.unknown));
 
                 //user answer is wrong
             }else{
                 // show correct answer
-                for(View view : ANSWERS)
-                    if(view.getTag().equals(answers.get(currentQuestion))) {
+                for(View view : answersViewList)
+                    if(view.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
                         view.setBackgroundColor(getResources().getColor(R.color.correct));
                     }
 
@@ -103,6 +136,9 @@ public class MainActivity extends Activity {
             }
 
             ++currentQuestion;
+            if(currentQuestion >= questionsIds.length)
+                endTest();
+
             findViewById(R.id.main_layout).setClickable(true);
 
             /* // delay instead of click for next question
@@ -116,6 +152,10 @@ public class MainActivity extends Activity {
             */
         }
     };
+
+    private void endTest() {
+        finish();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,13 +193,20 @@ public class MainActivity extends Activity {
         ((TextView)findViewById(R.id.questionID)).setText("id: " + questionNumber);
 
         questionView.setImageResource(getDrawableId(questionNumber, 'p'));
+
         answerAView.setImageResource(getDrawableId(questionNumber, 'a'));
         answerBView.setImageResource(getDrawableId(questionNumber, 'b'));
         answerCView.setImageResource(getDrawableId(questionNumber, 'c'));
 
-        for(View view : ANSWERS) {
-            view.setBackgroundColor(getResources().getColor(R.color.inactive));
-            view.setClickable(true);
+        LinearLayout questionsContainer = ((LinearLayout) findViewById(R.id.questions_containter));
+        questionsContainer.removeAllViews();
+
+        Collections.shuffle(answersViewList);
+
+        for(View v : answersViewList) {
+            questionsContainer.addView(v);
+            v.setBackgroundColor(getResources().getColor(R.color.inactive));
+            v.setClickable(true);
         }
     }
 

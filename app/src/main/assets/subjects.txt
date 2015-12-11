@@ -1,0 +1,24 @@
+Wstęp do Programowania-1-30
+Ochrona Środowiska-31-50
+BHP-51-57
+Architektura Komputerów-58-97
+Algorytmy-92-119
+Statystyka-120-149
+Systemy Operacyjne-150-199
+Metaloznawstwo-200-228
+Programowanie Obiektowe-229-255
+Multimedialne Techniki Internetowe-256-285
+Mechanika Płynów-286-315
+Ekonomika-342-362
+Metody Numeryczne-363-392
+Sieci-393-425
+Bazy Danych-426-466
+Java-467-496
+Grafika-497-523
+Prawo Patentowe-524-550
+Podstawy Sztucznej Inteligencji-551-576
+Inżynieria Oprogramowania-577-605
+Inżynieria Internetu-606-635
+Programowanie Równoległe-636-655
+Metoda Elementów Skończonych-656-683
+Wymiana Ciepła i Masy-684-711
