@@ -42,16 +42,6 @@
             android:id="@+id/answer_c"
             style="@style/answer"/>
     </LinearLayout>
-    <TextView
-        android:id="@+id/debug"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Debug"
-        android:onClick="debug"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/question"
-        android:layout_alignRight="@+id/question"
-        android:layout_alignEnd="@+id/question" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,21 +57,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Poprawne:"
-        android:id="@+id/textView6"
-        android:layout_below="@+id/current_question_tv"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="0"
         android:id="@+id/score_tv"
-        android:layout_alignTop="@+id/textView6"
         android:textColor="@color/score"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/current_question_tv" />
 
 </RelativeLayout>
 

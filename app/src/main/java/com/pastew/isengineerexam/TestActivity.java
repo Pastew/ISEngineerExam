@@ -51,19 +51,12 @@ public class TestActivity extends Activity {
         Intent intent = getIntent();
         String mode = intent.getStringExtra(MenuActivity.MODE);
 
+        int questionsNumber = intent.getIntExtra(MenuActivity.QUESTIONS_NUMBER, 10);
+        int startQuestionID = intent.getIntExtra(MenuActivity.START_QUESTION_ID, 1);
+        int endQuestionID = intent.getIntExtra(MenuActivity.END_QUESTION_ID, 20);
 
-        if (mode.equals(MenuActivity.RANDOM_TEST_MODE))
-            startRandomTest(intent.getIntExtra(MenuActivity.QUESTIONS_NUMBER, 10));
-
-        if (mode.equals(MenuActivity.RANDOM_RANGE_TEST_MODE)) {
-            int questionsNumber = intent.getIntExtra(MenuActivity.QUESTIONS_NUMBER, 10);
-            int startQuestionID = intent.getIntExtra(MenuActivity.START_QUESTION_ID, 1);
-            int endQuestionID = intent.getIntExtra(MenuActivity.END_QUESTION_ID, 20);
-
-            startRandomRangeTest(questionsNumber, startQuestionID, endQuestionID);
-            currentQuestion = 0;
-            score = 0;
-        }
+        startRangeTest(questionsNumber, startQuestionID, endQuestionID, mode);
+        currentQuestion = 0;
 
         showQuestion(questionsIds[currentQuestion]);
     }
@@ -93,8 +86,11 @@ public class TestActivity extends Activity {
         soundPool.play(soundID, volume, volume, 1, 0, 1f);
     }
 
-    private void startRandomRangeTest(int questionsNumber, int startQuestionID, int endQuestionID) {
-        questionsIds = Utils.getRandomArray(questionsNumber, startQuestionID, endQuestionID);
+    private void startRangeTest(int questionsNumber, int startQuestionID, int endQuestionID, String mode) {
+        if(mode.equals(MenuActivity.RANDOM_RANGE_TEST_MODE))
+            questionsIds = Utils.getRandomArray(questionsNumber, startQuestionID, endQuestionID);
+        else if(mode.equals(MenuActivity.ORDER_RANGE_TEST_MODE))
+            questionsIds = Utils.getArray(questionsNumber, startQuestionID, endQuestionID);
     }
 
     private void startRandomTest(int questionsNumber) {

@@ -38,4 +38,17 @@ public class Utils {
         return array;
     }
 
+    public static int[] getArray(int arrayLength, int left, int right) {
+        if(arrayLength > right-left+1)
+            arrayLength = right-left+1;
+
+        int[] arr = new int[arrayLength];
+
+        for(int i = 0 ; left <= right ; ++i) {
+            arr[i] = left;
+            ++left;
+        }
+
+        return arr;
+    }
 }

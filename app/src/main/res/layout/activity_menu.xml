@@ -13,69 +13,41 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-        android:id="@+id/separator1"
-        android:layout_above="@+id/random_test_button"
+        android:id="@+id/separator2"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/random_question_order_cb"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_above="@+id/textView3"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/separator2" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/random_test_subjects_spinner"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/random_test_button"
+        android:layout_toStartOf="@+id/random_test_button" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start"
         android:id="@+id/random_test_button"
-        android:layout_above="@+id/separator2"
+        android:layout_below="@+id/textView3"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="39dp" />
+        android:layout_alignParentEnd="true" />
 
-    <Spinner
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/subjects_spinner"
-        android:layout_alignBottom="@+id/subject_test_button"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/random_test"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/separator2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/subject_test_button"
-        android:layout_toStartOf="@+id/subject_test_button" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        android:id="@+id/subject_test_button"
-        android:layout_marginBottom="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/separator2"
-        android:layout_alignEnd="@+id/separator2" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Losowe pytania z całości"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/separator1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Losowe pytania z przedmiotu"
-        android:id="@+id/textView3"
-        android:layout_above="@+id/subjects_spinner"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="25dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -84,23 +56,28 @@
         android:gravity="center"
         android:text="10"
         android:id="@+id/questions_number"
-        android:layout_alignTop="@+id/textView5"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2" />
+        android:layout_alignBottom="@+id/minus_questions_number"
+        android:layout_toRightOf="@+id/minus_questions_number"
+        android:layout_toEndOf="@+id/minus_questions_number"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/random_test_subjects_spinner" />
 
     <Button
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-"
+        android:text="@string/minus"
         android:id="@+id/minus_questions_number"
-        android:layout_alignBottom="@+id/questions_number"
-        android:layout_toLeftOf="@+id/questions_number"
-        android:layout_toStartOf="@+id/questions_number" />
+        android:layout_below="@+id/random_test_subjects_spinner"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
 
     <Button
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+"
+        android:text="@string/plus"
         android:id="@+id/plus_questions_number"
         android:layout_alignBottom="@+id/questions_number"
         android:layout_toRightOf="@+id/questions_number"
@@ -109,12 +86,50 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Ilość pytań"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/number_of_questions"
         android:id="@+id/textView5"
+        android:layout_alignBottom="@+id/minus_questions_number"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/subject_learn"
+        android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/subject_learn_spinner"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp" />
+        android:layout_toLeftOf="@+id/subject_learn_button"
+        android:layout_toStartOf="@+id/subject_learn_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start"
+        android:id="@+id/subject_learn_button"
+        android:layout_alignTop="@+id/subject_learn_spinner"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/random_question_order"
+        android:id="@+id/random_question_order_cb"
+        android:layout_below="@+id/subject_learn_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:checked="false" />
 
 </RelativeLayout>

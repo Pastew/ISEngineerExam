@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,11 +22,12 @@ public class MenuActivity extends Activity {
     public final static String QUESTIONS_NUMBER = "QUESTIONS_NUMBER";
     public final static String MODE = "MODE";
 
-    public final static String RANDOM_TEST_MODE = "RANDOM_TEST_MODE";
-    public final static String RANDOM_RANGE_TEST_MODE = "RANDOM_RANGE_TEST_MODE";
-
     public final static String START_QUESTION_ID = "START_QUESTION_ID";
     public final static String END_QUESTION_ID = "END_QUESTION_ID";
+
+    public final static String RANDOM_RANGE_TEST_MODE = "RANDOM_RANGE_TEST_MODE";
+    public static final String ORDER_RANGE_TEST_MODE = "ORDER_RANGE_TEST_MODE";
+    public static final int QUESTION_INCREMENT = 5;
 
     private Subjects subjects;
 
@@ -37,7 +38,6 @@ public class MenuActivity extends Activity {
 
         populateSubjectsSpinner();
         addButtonsListeners();
-
     }
 
     private void addButtonsListeners() {
@@ -51,27 +51,19 @@ public class MenuActivity extends Activity {
         (findViewById(R.id.plus_questions_number)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addQuestionsNumber(5);
+                addQuestionsNumber(QUESTION_INCREMENT);
             }
         });
 
         (findViewById(R.id.random_test_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startRandomTest();
-            }
-        });
 
-        (findViewById(R.id.subject_test_button)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Spinner subjectSpinner = (Spinner)findViewById(R.id.subjects_spinner);
-                String selectedSubject = subjectSpinner.getSelectedItem().toString();
-                Subject subject = subjects.getSubject(selectedSubject);
-
-                if(subject == null)
-                    Toast.makeText(getApplicationContext(), "Coś poszło nie tak...", Toast.LENGTH_LONG); // This should not happen.
+                Subject subject = getSelectedSubject(R.id.random_test_subjects_spinner);
+                if (subject == null) {
+                    Toast.makeText(getApplicationContext(), "Coś poszło nie tak...", Toast.LENGTH_LONG).show(); // This should not happen.
+                    return;
+                }
 
                 int startQuestionId = subject.getFirstQuestionId();
                 int endQuestionId = subject.getLastQuestionId();
@@ -79,16 +71,29 @@ public class MenuActivity extends Activity {
                 startRandomTest(startQuestionId, endQuestionId);
             }
         });
+
+        (findViewById(R.id.subject_learn_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Subject subject = getSelectedSubject(R.id.subject_learn_spinner);
+                if (subject == null) {
+                    Toast.makeText(getApplicationContext(), "Coś poszło nie tak...", Toast.LENGTH_LONG).show(); // This should not happen.
+                    return;
+                }
+
+                int startQuestionId = subject.getFirstQuestionId();
+                int endQuestionId = subject.getLastQuestionId();
+
+                startLearnSubjectTest(startQuestionId, endQuestionId);
+            }
+        });
     }
 
-    private void startRandomTest() {
-        Intent intent = new Intent(this, TestActivity.class);
-        int questionsNumber = Integer.parseInt(((TextView) findViewById(R.id.questions_number)).getText().toString());
-
-        intent.putExtra(MODE, RANDOM_TEST_MODE);
-        intent.putExtra(QUESTIONS_NUMBER, questionsNumber);
-
-        startActivity(intent);
+    private Subject getSelectedSubject(int id) {
+        Spinner subjectSpinner = (Spinner) findViewById(id);
+        String selectedSubject = subjectSpinner.getSelectedItem().toString();
+        return subjects.getSubject(selectedSubject);
     }
 
     private void startRandomTest(int startQuestionId, int endQuestionId) {
@@ -103,11 +108,27 @@ public class MenuActivity extends Activity {
         startActivity(intent);
     }
 
+    private void startLearnSubjectTest(int startQuestionId, int endQuestionId) {
+        Intent intent = new Intent(this, TestActivity.class);
+        int questionsNumber = endQuestionId - startQuestionId + 1;
+
+        if (((CheckBox) findViewById(R.id.random_question_order_cb)).isChecked())
+            intent.putExtra(MODE, RANDOM_RANGE_TEST_MODE);
+        else
+            intent.putExtra(MODE, ORDER_RANGE_TEST_MODE);
+
+        intent.putExtra(QUESTIONS_NUMBER, questionsNumber);
+        intent.putExtra(START_QUESTION_ID, startQuestionId);
+        intent.putExtra(END_QUESTION_ID, endQuestionId);
+
+        startActivity(intent);
+    }
+
     private void addQuestionsNumber(int number) {
         TextView questionsNumberTV = (TextView) findViewById(R.id.questions_number);
         int questionsNumber = Integer.parseInt(questionsNumberTV.getText().toString());
 
-        if(questionsNumber + number > 0 && questionsNumber + number < 711) //TODO hardcode
+        if (questionsNumber + number > 0 && questionsNumber + number < 711) //TODO hardcode
             questionsNumber += number;
 
         questionsNumberTV.setText(Integer.toString(questionsNumber));
@@ -124,6 +145,7 @@ public class MenuActivity extends Activity {
 
         List<String> subjectsNameList = subjects.getNamesList();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, subjectsNameList);
-        ((Spinner) findViewById(R.id.subjects_spinner)).setAdapter(adapter);
+        ((Spinner) findViewById(R.id.random_test_subjects_spinner)).setAdapter(adapter);
+        ((Spinner) findViewById(R.id.subject_learn_spinner)).setAdapter(adapter);
     }
 }
