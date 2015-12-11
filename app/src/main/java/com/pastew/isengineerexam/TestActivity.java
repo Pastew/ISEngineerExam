@@ -2,7 +2,10 @@ package com.pastew.isengineerexam;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +27,10 @@ import java.util.List;
 
 public class TestActivity extends Activity {
 
+    private SoundPool soundPool;
+    private int correctSoundID, wrongSoundId;
+    boolean loaded = false;
+
     private ImageView questionView, answerAView, answerBView, answerCView;
     private List<View> answersViewList;
 
@@ -35,6 +42,7 @@ public class TestActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initSounds();
         loadAllAnswers();
 
         setContentView(R.layout.activity_test);
@@ -43,10 +51,11 @@ public class TestActivity extends Activity {
         Intent intent = getIntent();
         String mode = intent.getStringExtra(MenuActivity.MODE);
 
-        if(mode.equals(MenuActivity.RANDOM_TEST_MODE))
+
+        if (mode.equals(MenuActivity.RANDOM_TEST_MODE))
             startRandomTest(intent.getIntExtra(MenuActivity.QUESTIONS_NUMBER, 10));
 
-        if(mode.equals(MenuActivity.RANDOM_RANGE_TEST_MODE)) {
+        if (mode.equals(MenuActivity.RANDOM_RANGE_TEST_MODE)) {
             int questionsNumber = intent.getIntExtra(MenuActivity.QUESTIONS_NUMBER, 10);
             int startQuestionID = intent.getIntExtra(MenuActivity.START_QUESTION_ID, 1);
             int endQuestionID = intent.getIntExtra(MenuActivity.END_QUESTION_ID, 20);
@@ -57,6 +66,31 @@ public class TestActivity extends Activity {
         }
 
         showQuestion(questionsIds[currentQuestion]);
+    }
+
+    private void initSounds() {
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                loaded = true;
+            }
+        });
+
+        correctSoundID = soundPool.load(this, R.raw.correct, 1);
+        wrongSoundId = soundPool.load(this, R.raw.wrong, 1);
+    }
+
+    private void playSound(int soundID) {
+        if (!loaded)
+            return;
+
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        float actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float volume = actualVolume / maxVolume;
+        soundPool.play(soundID, volume, volume, 1, 0, 1f);
     }
 
     private void startRandomRangeTest(int questionsNumber, int startQuestionID, int endQuestionID) {
@@ -77,7 +111,7 @@ public class TestActivity extends Activity {
     }
 
     private void setupUI() {
-        ((TextView)findViewById(R.id.questionID)).setText("id: " + Integer.toString(currentQuestion));
+        ((TextView) findViewById(R.id.questionID)).setText("id: " + Integer.toString(currentQuestion));
 
         questionView = (ImageView) findViewById(R.id.question);
         answerAView = (ImageView) findViewById(R.id.answer_a);
@@ -95,14 +129,17 @@ public class TestActivity extends Activity {
 
         Collections.shuffle(answersViewList);
 
-        for(View v : answersViewList)
+        for (View v : answersViewList)
             v.setOnClickListener(answerClickListener);
 
         // next question after click anywhere
         findViewById(R.id.main_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showQuestion(questionsIds[currentQuestion]);
+                if (currentQuestion >= questionsIds.length)
+                    endTest();
+                else
+                    showQuestion(questionsIds[currentQuestion]);
             }
         });
 
@@ -111,37 +148,37 @@ public class TestActivity extends Activity {
     View.OnClickListener answerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ImageView userAnswer = (ImageView)v;
+            ImageView userAnswer = (ImageView) v;
 
             // disable answers buttons
-            for(View view : answersViewList)
+            for (View view : answersViewList)
                 view.setClickable(false);
 
             // user answer is correct
-            if(v.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
+            if (v.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.correct));
                 ++score;
-                ((TextView)findViewById(R.id.score_tv)).setText(Integer.toString(score));
+                ((TextView) findViewById(R.id.score_tv)).setText(Integer.toString(score));
+                playSound(correctSoundID);
             }
             // correct answer is unknown
-            else if(answers.get(questionsIds[currentQuestion]).equals(Answer.UNKNOWN)) {
+            else if (answers.get(questionsIds[currentQuestion]).equals(Answer.UNKNOWN)) {
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.unknown));
 
                 //user answer is wrong
-            }else{
+            } else {
                 // show correct answer
-                for(View view : answersViewList)
-                    if(view.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
+                for (View view : answersViewList)
+                    if (view.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
                         view.setBackgroundColor(getResources().getColor(R.color.correct));
                     }
 
                 // highlight users wrong answer
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.wrong));
+                playSound(wrongSoundId);
             }
 
             ++currentQuestion;
-            if(currentQuestion >= questionsIds.length)
-                endTest();
 
             findViewById(R.id.main_layout).setClickable(true);
 
@@ -194,8 +231,8 @@ public class TestActivity extends Activity {
     private void showQuestion(int questionNumber) {
         findViewById(R.id.main_layout).setClickable(false);
 
-        ((TextView)findViewById(R.id.questionID)).setText("id: " + questionNumber);
-        ((TextView)findViewById(R.id.current_question_tv)).setText(currentQuestion+1 + "/" + questionsIds.length);
+        ((TextView) findViewById(R.id.questionID)).setText("id: " + questionNumber);
+        ((TextView) findViewById(R.id.current_question_tv)).setText(currentQuestion + 1 + "/" + questionsIds.length);
 
 
         questionView.setImageResource(getDrawableId(questionNumber, 'p'));
@@ -209,7 +246,7 @@ public class TestActivity extends Activity {
 
         Collections.shuffle(answersViewList);
 
-        for(View v : answersViewList) {
+        for (View v : answersViewList) {
             questionsContainer.addView(v);
             v.setBackgroundColor(getResources().getColor(R.color.inactive));
             v.setClickable(true);
@@ -217,12 +254,11 @@ public class TestActivity extends Activity {
     }
 
     /**
-     *
      * @param questionNumber number of the question
-     * @param type p question <br/>
-     *             a A answer <br/>
-     *             b B answer <br/>
-     *             c C answer <br/>
+     * @param type           p question <br/>
+     *                       a A answer <br/>
+     *                       b B answer <br/>
+     *                       c C answer <br/>
      * @return id of the drawable (for example R.drawable.img1_p
      */
     private int getDrawableId(int questionNumber, char type) {
@@ -232,6 +268,6 @@ public class TestActivity extends Activity {
         fileName.append("_");
         fileName.append(type);
 
-        return getResources().getIdentifier(fileName.toString() , "drawable", getPackageName());
+        return getResources().getIdentifier(fileName.toString(), "drawable", getPackageName());
     }
 }
