@@ -44,7 +44,7 @@ public class Utils {
 
         int[] arr = new int[arrayLength];
 
-        for(int i = 0 ; left <= right ; ++i) {
+        for(int i = 0 ; i < arrayLength ; ++i) {
             arr[i] = left;
             ++left;
         }

@@ -33,4 +33,13 @@ public class Subjects {
         }
         return null;
     }
+
+    public int getQuestionsNumber(String subjectName) {
+        for(Subject s : subjects){
+            if(s.getName().equals(subjectName))
+                return s.getLastQuestionId() - s.getFirstQuestionId() + 1;
+        }
+
+        return 10; // That's not a good idea (?)
+    }
 }
