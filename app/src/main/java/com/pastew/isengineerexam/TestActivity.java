@@ -27,6 +27,9 @@ import java.util.List;
 
 public class TestActivity extends Activity {
 
+    public static final String SCORE = "SCORE";
+    public static final String CURRENT_QUESTION = "CURRENT_QUESTION";
+
     private SoundPool soundPool;
     private int correctSoundID, wrongSoundId;
     boolean loaded = false;
@@ -61,6 +64,23 @@ public class TestActivity extends Activity {
         showQuestion(questionsIds[currentQuestion]);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SCORE, score);
+        outState.putInt(CURRENT_QUESTION, currentQuestion);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        score = savedInstanceState.getInt(SCORE);
+        currentQuestion = savedInstanceState.getInt(CURRENT_QUESTION);
+
+        updateScoreTextView();
+        showQuestion(questionsIds[currentQuestion]);
+    }
+
     private void initSounds() {
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
@@ -91,10 +111,6 @@ public class TestActivity extends Activity {
             questionsIds = Utils.getRandomArray(questionsNumber, startQuestionID, endQuestionID);
         else if(mode.equals(MenuActivity.ORDER_RANGE_TEST_MODE))
             questionsIds = Utils.getArray(questionsNumber, startQuestionID, endQuestionID);
-    }
-
-    private void startRandomTest(int questionsNumber) {
-        questionsIds = Utils.getRandomArray(questionsNumber, 1, answers.size());
     }
 
     private void loadAllAnswers() {
@@ -154,7 +170,7 @@ public class TestActivity extends Activity {
             if (v.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.correct));
                 ++score;
-                ((TextView) findViewById(R.id.score_tv)).setText(Integer.toString(score));
+                updateScoreTextView();
                 playSound(correctSoundID);
             }
             // correct answer is unknown
@@ -190,6 +206,10 @@ public class TestActivity extends Activity {
         }
     };
 
+    private void updateScoreTextView() {
+        ((TextView) findViewById(R.id.score_tv)).setText(Integer.toString(score));
+    }
+
     private void endTest() {
         finish();
     }
@@ -216,11 +236,6 @@ public class TestActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void debug(View v) {
-        currentQuestion++;
-        showQuestion(currentQuestion);
-    }
-
     /**
      * Loads images for questionNumber and shows it on screen
      */
@@ -229,7 +244,6 @@ public class TestActivity extends Activity {
 
         ((TextView) findViewById(R.id.questionID)).setText("id: " + questionNumber);
         ((TextView) findViewById(R.id.current_question_tv)).setText(currentQuestion + 1 + "/" + questionsIds.length);
-
 
         questionView.setImageResource(getDrawableId(questionNumber, 'p'));
 

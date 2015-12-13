@@ -62,7 +62,7 @@ public class MenuActivity extends Activity {
                 String subjectName = subjectSpinner.getSelectedItem().toString();
                 int questionsNumberForSelectedSubject = subjects.getQuestionsNumber(subjectName);
 
-                ((TextView)findViewById(R.id.questions_number)).setText(Integer.toString(questionsNumberForSelectedSubject));
+                ((TextView) findViewById(R.id.questions_number)).setText(Integer.toString(questionsNumberForSelectedSubject));
             }
         });
 
@@ -90,6 +90,10 @@ public class MenuActivity extends Activity {
     private void startTest(int startQuestionId, int endQuestionId) {
         Intent intent = new Intent(this, TestActivity.class);
         int questionsNumber = Integer.parseInt( ((TextView)findViewById(R.id.questions_number)).getText().toString() );
+        if(questionsNumber < 1 || questionsNumber > 711) {
+            Toast.makeText(getApplicationContext(), "Podaj normalną ilość pytań", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (((CheckBox) findViewById(R.id.random_question_order_cb)).isChecked())
             intent.putExtra(MODE, RANDOM_RANGE_TEST_MODE);

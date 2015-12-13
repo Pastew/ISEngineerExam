@@ -49,7 +49,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="-"
         android:id="@+id/current_question_tv"
-        android:layout_marginTop="51dp"
         android:layout_below="@+id/questionID"
         android:layout_centerHorizontal="true" />
 
