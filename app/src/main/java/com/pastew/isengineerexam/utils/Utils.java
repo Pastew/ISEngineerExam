@@ -1,5 +1,7 @@
 package com.pastew.isengineerexam.utils;
 
+import android.util.Log;
+
 import java.util.HashSet;
 import java.util.Random;
 
@@ -45,8 +47,8 @@ public class Utils {
         int[] arr = new int[arrayLength];
 
         for(int i = 0 ; i < arrayLength ; ++i) {
-            arr[i] = left;
-            ++left;
+            arr[i] = left++;
+            Log.i("BUG", "i = " + i + ", item = " + arr[i]);
         }
 
         return arr;
