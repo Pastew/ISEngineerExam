@@ -190,7 +190,7 @@ public class TestActivity extends Activity {
             } else {
                 // show correct answer
                 for (View view : answersViewList)
-                    if (answer.equals(answers.get(questionsIds[currentQuestion]))) {
+                    if (view.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
                         view.setBackgroundColor(getResources().getColor(R.color.correct));
                     }
 
@@ -254,6 +254,12 @@ public class TestActivity extends Activity {
      */
     private void showQuestion(int questionNumber) {
         findViewById(R.id.main_layout).setClickable(false);
+
+        // we don't know the correct answer, show dialog
+        if(answers.get(questionsIds[currentQuestion]).equals(Answer.UNKNOWN))
+            findViewById(R.id.unknown_answer_dialog).setVisibility(View.VISIBLE);
+        else
+            findViewById(R.id.unknown_answer_dialog).setVisibility(View.VISIBLE);
 
         ((TextView) findViewById(R.id.questionID)).setText("id: " + questionNumber);
         ((TextView) findViewById(R.id.current_question_tv)).setText(currentQuestion + 1 + "/" + questionsIds.length);

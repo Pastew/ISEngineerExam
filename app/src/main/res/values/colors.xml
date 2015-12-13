@@ -6,4 +6,5 @@
     <color name="wrong">#E30000</color>
     <color name="unknown">#fded0c</color>
     <color name="score">#009933</color>
+    <color name="unknown_dialog">#F9F314</color>
 </resources>

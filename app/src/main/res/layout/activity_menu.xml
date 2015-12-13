@@ -19,10 +19,10 @@
         android:id="@+id/questions_number"
         android:layout_alignBottom="@+id/minus_questions_number"
         android:layout_toRightOf="@+id/minus_questions_number"
-        android:layout_toEndOf="@+id/minus_questions_number"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dp"
-        android:layout_below="@+id/random_question_order_cb" />
+        android:layout_below="@+id/random_question_order_cb"
+        android:layout_alignRight="@+id/subject_spinner"
+        android:layout_alignEnd="@+id/subject_spinner" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:text="@string/random_question_order"
         android:id="@+id/random_question_order_cb"
-        android:checked="false"
+        android:checked="true"
         android:layout_below="@+id/subject_spinner"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -120,18 +120,8 @@
         android:id="@+id/online"
         android:checked="true"
         android:layout_above="@+id/textView3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/stats"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/app_version_tv"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignLeft="@+id/textView5"
+        android:layout_alignStart="@+id/textView5" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -139,9 +129,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/need_internet_dialog"
         android:id="@+id/textView3"
-        android:layout_above="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_above="@+id/app_version_tv"
+        android:layout_alignLeft="@+id/online"
+        android:layout_alignStart="@+id/online" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -150,8 +140,9 @@
         android:text="@string/stats_url"
         android:autoLink="all"
         android:id="@+id/textView4"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2" />
+        android:layout_alignBaseline="@+id/app_version_tv"
+        android:layout_alignBottom="@+id/app_version_tv"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignStart="@+id/textView3" />
 
 </RelativeLayout>

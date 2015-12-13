@@ -62,6 +62,18 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/current_question_tv" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/unknown_answer"
+        android:id="@+id/unknown_answer_dialog"
+        android:visibility="gone"
+        android:layout_below="@+id/questionID"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/score_tv" />
+
 </RelativeLayout>
 
 

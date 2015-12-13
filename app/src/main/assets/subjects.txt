@@ -10,6 +10,7 @@ Metaloznawstwo-200-228
 Programowanie Obiektowe-229-255
 Multimedialne Techniki Internetowe-256-285
 Mechanika Płynów-286-315
+Mechanika Ciała-316-341
 Ekonomika-342-362
 Metody Numeryczne-363-392
 Sieci-393-425
