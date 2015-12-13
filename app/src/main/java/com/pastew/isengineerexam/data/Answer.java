@@ -12,6 +12,9 @@ public enum Answer {
         this.text = text;
     }
 
+    public final String getString(){
+        return text;
+    }
     @Override
     public String toString(){
         return text;

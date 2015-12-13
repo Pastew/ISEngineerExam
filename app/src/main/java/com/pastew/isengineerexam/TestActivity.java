@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.widget.Toast;
 import com.pastew.isengineerexam.data.Answer;
 import com.pastew.isengineerexam.data.Answers;
 import com.pastew.isengineerexam.data.FileParser;
+import com.pastew.isengineerexam.online.AnswerSender;
 import com.pastew.isengineerexam.utils.Utils;
 
 import java.io.IOException;
@@ -41,6 +41,9 @@ public class TestActivity extends Activity {
     private int currentQuestion;
     private Answers answers;
     private int score;
+    private boolean online;
+
+    private AnswerSender answerSender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +60,15 @@ public class TestActivity extends Activity {
         int questionsNumber = intent.getIntExtra(MenuActivity.QUESTIONS_NUMBER, 10);
         int startQuestionID = intent.getIntExtra(MenuActivity.START_QUESTION_ID, 1);
         int endQuestionID = intent.getIntExtra(MenuActivity.END_QUESTION_ID, 20);
+        online = intent.getBooleanExtra(MenuActivity.ONLINE, true);
 
         startRangeTest(questionsNumber, startQuestionID, endQuestionID, mode);
         currentQuestion = 0;
 
         showQuestion(questionsIds[currentQuestion]);
+
+        if(online)
+            answerSender = new AnswerSender(getApplicationContext());
     }
 
     @Override
@@ -162,12 +169,14 @@ public class TestActivity extends Activity {
         public void onClick(View v) {
             ImageView userAnswer = (ImageView) v;
 
+            Answer answer = (Answer) v.getTag();
+
             // disable answers buttons
             for (View view : answersViewList)
                 view.setClickable(false);
 
             // user answer is correct
-            if (v.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
+            if (answer.equals(answers.get(questionsIds[currentQuestion]))) {
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.correct));
                 ++score;
                 updateScoreTextView();
@@ -181,7 +190,7 @@ public class TestActivity extends Activity {
             } else {
                 // show correct answer
                 for (View view : answersViewList)
-                    if (view.getTag().equals(answers.get(questionsIds[currentQuestion]))) {
+                    if (answer.equals(answers.get(questionsIds[currentQuestion]))) {
                         view.setBackgroundColor(getResources().getColor(R.color.correct));
                     }
 
@@ -190,7 +199,11 @@ public class TestActivity extends Activity {
                 playSound(wrongSoundId);
             }
 
-            ++currentQuestion;
+
+            if(online)
+                answerSender.sendAnswer(questionsIds[currentQuestion], answer.getString());
+
+            currentQuestion++;
 
             findViewById(R.id.main_layout).setClickable(true);
 

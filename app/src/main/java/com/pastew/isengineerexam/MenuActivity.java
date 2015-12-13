@@ -21,6 +21,7 @@ public class MenuActivity extends Activity {
 
     public final static String QUESTIONS_NUMBER = "QUESTIONS_NUMBER";
     public final static String MODE = "MODE";
+    public static final String ONLINE = "ONLINE";
 
     public final static String START_QUESTION_ID = "START_QUESTION_ID";
     public final static String END_QUESTION_ID = "END_QUESTION_ID";
@@ -104,13 +105,21 @@ public class MenuActivity extends Activity {
         intent.putExtra(QUESTIONS_NUMBER, questionsNumber);
         intent.putExtra(START_QUESTION_ID, startQuestionId);
         intent.putExtra(END_QUESTION_ID, endQuestionId);
+        intent.putExtra(ONLINE, ((CheckBox) findViewById(R.id.online)).isChecked());
 
         startActivity(intent);
     }
 
     private void addQuestionsNumber(int number) {
         TextView questionsNumberTV = (TextView) findViewById(R.id.questions_number);
-        int questionsNumber = Integer.parseInt(questionsNumberTV.getText().toString());
+
+        int questionsNumber;
+        try {
+            String questionsNumberString = questionsNumberTV.getText().toString();
+            questionsNumber = Integer.parseInt(questionsNumberString);
+        } catch( Exception e){
+            questionsNumber = 0;
+        }
 
         if (questionsNumber + number > 0 && questionsNumber + number < 711) //TODO hardcode
             questionsNumber += number;
