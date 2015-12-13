@@ -36,6 +36,7 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        ((TextView) findViewById(R.id.app_version_tv)).setText("v" + BuildConfig.VERSION_NAME);
         populateSubjectsSpinner();
         addButtonsListeners();
     }

@@ -102,4 +102,13 @@
         android:layout_toRightOf="@+id/plus_questions_number"
         android:layout_toEndOf="@+id/plus_questions_number" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/app_version_tv"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
