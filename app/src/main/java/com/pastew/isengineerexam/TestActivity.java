@@ -39,6 +39,7 @@ public class TestActivity extends Activity {
 
     private int[] questionsIds;
     private int currentQuestion;
+    private long questionStartTime;
     private Answers answers;
     private int score;
     private boolean online;
@@ -201,7 +202,7 @@ public class TestActivity extends Activity {
 
 
             if(online)
-                answerSender.sendAnswer(questionsIds[currentQuestion], answer.getString());
+                answerSender.sendAnswer(questionsIds[currentQuestion], answer.getString(), questionStartTime);
 
             currentQuestion++;
 
@@ -259,7 +260,7 @@ public class TestActivity extends Activity {
         if(answers.get(questionsIds[currentQuestion]).equals(Answer.UNKNOWN))
             findViewById(R.id.unknown_answer_dialog).setVisibility(View.VISIBLE);
         else
-            findViewById(R.id.unknown_answer_dialog).setVisibility(View.VISIBLE);
+            findViewById(R.id.unknown_answer_dialog).setVisibility(View.INVISIBLE);
 
         ((TextView) findViewById(R.id.questionID)).setText("id: " + questionNumber);
         ((TextView) findViewById(R.id.current_question_tv)).setText(currentQuestion + 1 + "/" + questionsIds.length);
@@ -280,6 +281,8 @@ public class TestActivity extends Activity {
             v.setBackgroundColor(getResources().getColor(R.color.inactive));
             v.setClickable(true);
         }
+
+        questionStartTime = System.currentTimeMillis();
     }
 
     /**

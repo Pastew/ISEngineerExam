@@ -20,9 +20,7 @@
         android:layout_alignBottom="@+id/minus_questions_number"
         android:layout_toRightOf="@+id/minus_questions_number"
         android:layout_marginLeft="10dp"
-        android:layout_below="@+id/random_question_order_cb"
-        android:layout_alignRight="@+id/subject_spinner"
-        android:layout_alignEnd="@+id/subject_spinner" />
+        android:layout_below="@+id/random_question_order_cb" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

@@ -24,38 +24,25 @@ import java.util.Map;
  */
 public class AnswerSender {
 
-    Context context;
-    String user_id;
+    private final String url = "http://gcweb.drl.pl/is_exam/save.php";
+
+    private String user_id, answer;
+    private long time;
+
+    private RequestQueue requestQueue;
 
     public AnswerSender(Context context) {
-        this.context = context;
+        // Create request queue
         user_id = Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+
+        requestQueue= Volley.newRequestQueue(context);
     }
 
-    public void sendAnswer(final int questionId, final String answer){
+    public void sendAnswer(final int questionId, String userAnswer, long startTime){
 
-        // Create request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-
-        //  Create json array request
-        JSONObject params = new JSONObject();
-        try {
-            params.put("question_id", questionId);
-            params.put("answer", answer);
-            params.put("user_id", user_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        JSONObject data = new JSONObject();
-        try{
-            data.put("answer", params);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        String url = "http://gcweb.drl.pl/is_exam/save.php";
+        time = System.currentTimeMillis() - startTime;
+        answer = userAnswer;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -76,6 +63,7 @@ public class AnswerSender {
                 params.put("question_id", Integer.toString(questionId));
                 params.put("answer", answer);
                 params.put("user_id", user_id);
+                params.put("time", Long.toString(time));
 
                 return params;
             }
@@ -87,6 +75,8 @@ public class AnswerSender {
                 return params;
             }
         };
+
+
 
         // add json array request to the request queue
         requestQueue.add(stringRequest);
