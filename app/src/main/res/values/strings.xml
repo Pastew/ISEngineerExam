@@ -17,4 +17,6 @@
     <string name="share_your_answers">Udostępniaj swoje odpowiedzi*</string>
     <string name="stats_url">http://gcweb.drl.pl/is_exam/results.php</string>
     <string name="unknown_answer">*Odpowiedź nieznana</string>
+    <string name="statistics">Statystyki</string>
+    <string name="your_answers">Twoje odpowiedzi</string>
 </resources>

@@ -106,6 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="v"
         android:id="@+id/app_version_tv"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -118,8 +119,8 @@
         android:id="@+id/online"
         android:checked="true"
         android:layout_above="@+id/textView3"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_alignStart="@+id/textView5" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -127,20 +128,29 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/need_internet_dialog"
         android:id="@+id/textView3"
-        android:layout_above="@+id/app_version_tv"
-        android:layout_alignLeft="@+id/online"
-        android:layout_alignStart="@+id/online" />
+        android:layout_above="@+id/stats_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/stats_url"
+        android:text="@string/statistics"
         android:autoLink="all"
-        android:id="@+id/textView4"
-        android:layout_alignBaseline="@+id/app_version_tv"
+        android:id="@+id/stats_button"
         android:layout_alignBottom="@+id/app_version_tv"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/your_answers"
+        android:id="@+id/user_answers_button"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/stats_button"
+        android:layout_toEndOf="@+id/stats_button" />
 
 </RelativeLayout>

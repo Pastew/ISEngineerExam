@@ -2,7 +2,9 @@ package com.pastew.isengineerexam;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -85,6 +87,25 @@ public class MenuActivity extends Activity {
                 int endQuestionId = subject.getLastQuestionId();
 
                 startTest(startQuestionId, endQuestionId);
+            }
+        });
+
+        (findViewById(R.id.stats_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://gcweb.drl.pl/is_exam/results.php")));
+            }
+        });
+
+        (findViewById(R.id.user_answers_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String link =
+                        "http://gcweb.drl.pl/is_exam/results.php?user_id="
+                        + Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
+
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(link)));
             }
         });
     }
