@@ -26,9 +26,6 @@ import java.util.List;
 
 public class TestActivity extends Activity {
 
-    public static final String SCORES = "SCORE"; // TODO export to constans class or something
-    public static final String CURRENT_QUESTION = "CURRENT_QUESTION";
-
     private SoundPool soundPool;
     private int correctSoundID, wrongSoundId;
     boolean loaded = false;
@@ -55,7 +52,7 @@ public class TestActivity extends Activity {
         setupUI();
 
         Intent intent = getIntent();
-        questionsIds = intent.getIntArrayExtra(MenuActivity.QUESTIONS_IDS);
+        questionsIds = intent.getIntArrayExtra(FinalStrings.QUESTIONS_IDS);
 
         startTest();
 
@@ -67,17 +64,17 @@ public class TestActivity extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putIntArray(SCORES, scores);
-        outState.putIntArray(MenuActivity.QUESTIONS_IDS, questionsIds);
-        outState.putInt(CURRENT_QUESTION, currentQuestion);
+        outState.putIntArray(FinalStrings.SCORES, scores);
+        outState.putIntArray(FinalStrings.QUESTIONS_IDS, questionsIds);
+        outState.putInt(FinalStrings.CURRENT_QUESTION, currentQuestion);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        scores = savedInstanceState.getIntArray(SCORES);
-        questionsIds = savedInstanceState.getIntArray(MenuActivity.QUESTIONS_IDS);
-        currentQuestion = savedInstanceState.getInt(CURRENT_QUESTION);
+        scores = savedInstanceState.getIntArray(FinalStrings.SCORES);
+        questionsIds = savedInstanceState.getIntArray(FinalStrings.QUESTIONS_IDS);
+        currentQuestion = savedInstanceState.getInt(FinalStrings.CURRENT_QUESTION);
 
         updateScoreTextView();
         showQuestion(questionsIds[currentQuestion]);
@@ -218,8 +215,8 @@ public class TestActivity extends Activity {
 
     private void endTest() {
         Intent resultsIntent = new Intent(TestActivity.this, ResultsActivity.class);
-        resultsIntent.putExtra(SCORES, scores);
-        resultsIntent.putExtra(MenuActivity.QUESTIONS_IDS, questionsIds);
+        resultsIntent.putExtra(FinalStrings.SCORES, scores);
+        resultsIntent.putExtra(FinalStrings.QUESTIONS_IDS, questionsIds);
         resultsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         startActivity(resultsIntent);

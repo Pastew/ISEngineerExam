@@ -25,11 +25,9 @@ import java.util.List;
 
 public class MenuActivity extends Activity {
 
-    public final static String ONLINE_SHARED_PREFERENCES = "ONLINE_SHARED_PREFERENCES";
     private SharedPreferences sharedPreferences;
 
-    public static final String QUESTIONS_IDS = "QUESTIONS_IDS";
-    public static final int QUESTION_INCREMENT = 5;
+    public final int QUESTION_INCREMENT = 5;
 
     private Subjects subjects;
 
@@ -43,7 +41,7 @@ public class MenuActivity extends Activity {
         addButtonsListeners();
         addCheckBoxListener();
 
-        sharedPreferences = getSharedPreferences(MenuActivity.ONLINE_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(FinalStrings.ONLINE_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setOnline(((CheckBox)findViewById(R.id.online_checkbox)).isChecked());
     }
 
@@ -144,7 +142,7 @@ public class MenuActivity extends Activity {
         else
             questionsIDs = Utils.getArray(questionsNumber, startQuestionID, endQuestionID);
 
-        intent.putExtra(QUESTIONS_IDS, questionsIDs);
+        intent.putExtra(FinalStrings.QUESTIONS_IDS, questionsIDs);
         startActivity(intent);
     }
 

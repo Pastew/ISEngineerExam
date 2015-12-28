@@ -12,9 +12,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.pastew.isengineerexam.MenuActivity;
+import com.pastew.isengineerexam.FinalStrings;
 import com.pastew.isengineerexam.R;
-import com.pastew.isengineerexam.TestActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -87,7 +86,7 @@ public class AnswerSender {
     }
 
     private boolean onlineMode() {
-        SharedPreferences sharedPref = context.getSharedPreferences(MenuActivity.ONLINE_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences(FinalStrings.ONLINE_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPref.getBoolean(context.getString(R.string.online_pref), false);
     }
 }

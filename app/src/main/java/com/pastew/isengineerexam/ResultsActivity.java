@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pastew.isengineerexam.utils.Utils;
 
@@ -36,7 +35,7 @@ public class ResultsActivity extends Activity {
                 Intent testIntent = new Intent(ResultsActivity.this, TestActivity.class);
                 testIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                testIntent.putExtra(MenuActivity.QUESTIONS_IDS, getWrongAnsweredQuestionsIDs());
+                testIntent.putExtra(FinalStrings.QUESTIONS_IDS, getWrongAnsweredQuestionsIDs());
                 startActivity(testIntent);
                 finish();
             }
@@ -70,7 +69,7 @@ public class ResultsActivity extends Activity {
 
     private void getExtras() {
         Intent intent = getIntent();
-        scores = intent.getIntArrayExtra(TestActivity.SCORES);
-        questionsIDs = intent.getIntArrayExtra(MenuActivity.QUESTIONS_IDS);
+        scores = intent.getIntArrayExtra(FinalStrings.SCORES);
+        questionsIDs = intent.getIntArrayExtra(FinalStrings.QUESTIONS_IDS);
     }
 }
