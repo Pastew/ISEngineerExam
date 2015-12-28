@@ -19,4 +19,9 @@
     <string name="unknown_answer">*Odpowiedź nieznana</string>
     <string name="statistics">Statystyki</string>
     <string name="your_answers">Twoje odpowiedzi</string>
+    <string name="yours_score">Twój wynik:</string>
+    <string name="exit">Wróć do menu</string>
+    <string name="retake_test">Popraw złe odpowiedzi</string>
+
+    <string name="online_pref">online_pref</string>
 </resources>

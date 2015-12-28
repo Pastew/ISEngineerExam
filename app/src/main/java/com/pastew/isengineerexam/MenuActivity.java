@@ -1,13 +1,16 @@
 package com.pastew.isengineerexam;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,21 +18,17 @@ import android.widget.Toast;
 import com.pastew.isengineerexam.data.FileParser;
 import com.pastew.isengineerexam.data.Subject;
 import com.pastew.isengineerexam.data.Subjects;
+import com.pastew.isengineerexam.utils.Utils;
 
 import java.io.IOException;
 import java.util.List;
 
 public class MenuActivity extends Activity {
 
-    public final static String QUESTIONS_NUMBER = "QUESTIONS_NUMBER";
-    public final static String MODE = "MODE";
-    public static final String ONLINE = "ONLINE";
+    public final static String ONLINE_SHARED_PREFERENCES = "ONLINE_SHARED_PREFERENCES";
+    private SharedPreferences sharedPreferences;
 
-    public final static String START_QUESTION_ID = "START_QUESTION_ID";
-    public final static String END_QUESTION_ID = "END_QUESTION_ID";
-
-    public final static String RANDOM_RANGE_TEST_MODE = "RANDOM_RANGE_TEST_MODE";
-    public static final String ORDER_RANGE_TEST_MODE = "ORDER_RANGE_TEST_MODE";
+    public static final String QUESTIONS_IDS = "QUESTIONS_IDS";
     public static final int QUESTION_INCREMENT = 5;
 
     private Subjects subjects;
@@ -42,6 +41,26 @@ public class MenuActivity extends Activity {
         ((TextView) findViewById(R.id.app_version_tv)).setText("v" + BuildConfig.VERSION_NAME);
         populateSubjectsSpinner();
         addButtonsListeners();
+        addCheckBoxListener();
+
+        sharedPreferences = getSharedPreferences(MenuActivity.ONLINE_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        setOnline(((CheckBox)findViewById(R.id.online_checkbox)).isChecked());
+    }
+
+    private void addCheckBoxListener() {
+        CheckBox onlineCheckbox = ( CheckBox ) findViewById( R.id.online_checkbox );
+        onlineCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setOnline(isChecked);
+            }
+        });
+    }
+
+    private void setOnline(boolean online) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.online_pref), online);
+        editor.commit();
     }
 
     private void addButtonsListeners() {
@@ -102,15 +121,15 @@ public class MenuActivity extends Activity {
             public void onClick(View v) {
                 String link =
                         "http://gcweb.drl.pl/is_exam/results.php?user_id="
-                        + Settings.Secure.getString(getApplicationContext().getContentResolver(),
-                        Settings.Secure.ANDROID_ID);
+                                + Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                                Settings.Secure.ANDROID_ID);
 
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(link)));
             }
         });
     }
 
-    private void startTest(int startQuestionId, int endQuestionId) {
+    private void startTest(int startQuestionID, int endQuestionID) {
         Intent intent = new Intent(this, TestActivity.class);
         int questionsNumber = Integer.parseInt( ((TextView)findViewById(R.id.questions_number)).getText().toString() );
         if(questionsNumber < 1 || questionsNumber > 711) {
@@ -118,16 +137,14 @@ public class MenuActivity extends Activity {
             return;
         }
 
-        if (((CheckBox) findViewById(R.id.random_question_order_cb)).isChecked())
-            intent.putExtra(MODE, RANDOM_RANGE_TEST_MODE);
+        int[] questionsIDs;
+        boolean randomOrder = ((CheckBox) findViewById(R.id.random_question_order_cb)).isChecked();
+        if(randomOrder)
+            questionsIDs = Utils.getRandomArray(questionsNumber, startQuestionID, endQuestionID);
         else
-            intent.putExtra(MODE, ORDER_RANGE_TEST_MODE);
+            questionsIDs = Utils.getArray(questionsNumber, startQuestionID, endQuestionID);
 
-        intent.putExtra(QUESTIONS_NUMBER, questionsNumber);
-        intent.putExtra(START_QUESTION_ID, startQuestionId);
-        intent.putExtra(END_QUESTION_ID, endQuestionId);
-        intent.putExtra(ONLINE, ((CheckBox) findViewById(R.id.online)).isChecked());
-
+        intent.putExtra(QUESTIONS_IDS, questionsIDs);
         startActivity(intent);
     }
 

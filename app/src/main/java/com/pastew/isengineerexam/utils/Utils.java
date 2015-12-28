@@ -53,4 +53,17 @@ public class Utils {
 
         return arr;
     }
+
+    /**
+     *
+     * @param score example: [1 0 0 1 1]
+     * @return example to above: 3
+     */
+    public static int getScore(int[] score) {
+        int sum = 0;
+        for (int aScore : score) {
+            sum += aScore;
+        }
+        return sum;
+    }
 }

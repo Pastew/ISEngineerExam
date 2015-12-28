@@ -24,10 +24,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 public class TestActivity extends Activity {
 
-    public static final String SCORE = "SCORE";
+    public static final String SCORES = "SCORE"; // TODO export to constans class or something
     public static final String CURRENT_QUESTION = "CURRENT_QUESTION";
 
     private SoundPool soundPool;
@@ -37,12 +36,12 @@ public class TestActivity extends Activity {
     private ImageView questionView, answerAView, answerBView, answerCView;
     private List<View> answersViewList;
 
-    private int[] questionsIds;
     private int currentQuestion;
     private long questionStartTime;
     private Answers answers;
-    private int score;
-    private boolean online;
+
+    private int[] questionsIds;
+    private int[] scores;
 
     private AnswerSender answerSender;
 
@@ -56,33 +55,28 @@ public class TestActivity extends Activity {
         setupUI();
 
         Intent intent = getIntent();
-        String mode = intent.getStringExtra(MenuActivity.MODE);
+        questionsIds = intent.getIntArrayExtra(MenuActivity.QUESTIONS_IDS);
 
-        int questionsNumber = intent.getIntExtra(MenuActivity.QUESTIONS_NUMBER, 10);
-        int startQuestionID = intent.getIntExtra(MenuActivity.START_QUESTION_ID, 1);
-        int endQuestionID = intent.getIntExtra(MenuActivity.END_QUESTION_ID, 20);
-        online = intent.getBooleanExtra(MenuActivity.ONLINE, true);
-
-        startRangeTest(questionsNumber, startQuestionID, endQuestionID, mode);
-        currentQuestion = 0;
+        startTest();
 
         showQuestion(questionsIds[currentQuestion]);
 
-        if(online)
-            answerSender = new AnswerSender(getApplicationContext());
+        answerSender = new AnswerSender(getApplicationContext());
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(SCORE, score);
+        outState.putIntArray(SCORES, scores);
+        outState.putIntArray(MenuActivity.QUESTIONS_IDS, questionsIds);
         outState.putInt(CURRENT_QUESTION, currentQuestion);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        score = savedInstanceState.getInt(SCORE);
+        scores = savedInstanceState.getIntArray(SCORES);
+        questionsIds = savedInstanceState.getIntArray(MenuActivity.QUESTIONS_IDS);
         currentQuestion = savedInstanceState.getInt(CURRENT_QUESTION);
 
         updateScoreTextView();
@@ -114,11 +108,11 @@ public class TestActivity extends Activity {
         soundPool.play(soundID, volume, volume, 1, 0, 1f);
     }
 
-    private void startRangeTest(int questionsNumber, int startQuestionID, int endQuestionID, String mode) {
-        if(mode.equals(MenuActivity.RANDOM_RANGE_TEST_MODE))
-            questionsIds = Utils.getRandomArray(questionsNumber, startQuestionID, endQuestionID);
-        else if(mode.equals(MenuActivity.ORDER_RANGE_TEST_MODE))
-            questionsIds = Utils.getArray(questionsNumber, startQuestionID, endQuestionID);
+    private void startTest() {
+        currentQuestion = 0;
+        scores = new int[questionsIds.length];
+        for(int i = 0 ; i < scores.length ; ++i)
+            scores[i] = 0;
     }
 
     private void loadAllAnswers() {
@@ -179,14 +173,14 @@ public class TestActivity extends Activity {
             // user answer is correct
             if (answer.equals(answers.get(questionsIds[currentQuestion]))) {
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.correct));
-                ++score;
+                scores[currentQuestion] = 1;
                 updateScoreTextView();
                 playSound(correctSoundID);
             }
             // correct answer is unknown
             else if (answers.get(questionsIds[currentQuestion]).equals(Answer.UNKNOWN)) {
                 userAnswer.setBackgroundColor(getResources().getColor(R.color.unknown));
-
+                scores[currentQuestion] = 1;
                 //user answer is wrong
             } else {
                 // show correct answer
@@ -200,9 +194,7 @@ public class TestActivity extends Activity {
                 playSound(wrongSoundId);
             }
 
-
-            if(online)
-                answerSender.sendAnswer(questionsIds[currentQuestion], answer.getString(), questionStartTime);
+            answerSender.sendAnswer(questionsIds[currentQuestion], answer.getString(), questionStartTime);
 
             currentQuestion++;
 
@@ -221,10 +213,16 @@ public class TestActivity extends Activity {
     };
 
     private void updateScoreTextView() {
-        ((TextView) findViewById(R.id.score_tv)).setText(Integer.toString(score));
+        ((TextView) findViewById(R.id.score_tv)).setText(Integer.toString(Utils.getScore(scores)));
     }
 
     private void endTest() {
+        Intent resultsIntent = new Intent(TestActivity.this, ResultsActivity.class);
+        resultsIntent.putExtra(SCORES, scores);
+        resultsIntent.putExtra(MenuActivity.QUESTIONS_IDS, questionsIds);
+        resultsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        startActivity(resultsIntent);
         finish();
     }
 
@@ -294,12 +292,6 @@ public class TestActivity extends Activity {
      * @return id of the drawable (for example R.drawable.img1_p
      */
     private int getDrawableId(int questionNumber, char type) {
-        StringBuilder fileName = new StringBuilder();
-        fileName.append("img");
-        fileName.append(questionNumber);
-        fileName.append("_");
-        fileName.append(type);
-
-        return getResources().getIdentifier(fileName.toString(), "drawable", getPackageName());
+        return getResources().getIdentifier("img" + questionNumber + "_" + type, "drawable", getPackageName());
     }
 }

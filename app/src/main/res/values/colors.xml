@@ -2,7 +2,7 @@
 <resources>
     <color name="correct">#88F763</color>
     <color name="white">#FFFFFF</color>
-    <color name="inactive">#787878</color>
+    <color name="inactive">#b3b3b3</color>
     <color name="wrong">#E30000</color>
     <color name="unknown">#fded0c</color>
     <color name="score">#009933</color>
