@@ -84,6 +84,7 @@ public class MenuActivity extends Activity {
                 int questionsNumberForSelectedSubject = subjects.getQuestionsNumber(subjectName);
 
                 ((TextView) findViewById(R.id.questions_number)).setText(Integer.toString(questionsNumberForSelectedSubject));
+                AnalyticsApplication.getInstance().trackEvent("MainMenuButtons", "AllAnswers", "click");
             }
         });
 
@@ -103,6 +104,13 @@ public class MenuActivity extends Activity {
                 int startQuestionId = subject.getFirstQuestionId();
                 int endQuestionId = subject.getLastQuestionId();
 
+                String order = ((CheckBox) findViewById(R.id.random_question_order_cb)).isChecked()
+                        ? "random" : "ordered";
+
+                String online = ((CheckBox)findViewById(R.id.online_checkbox)).isChecked() ? "online" : "offline";
+
+                AnalyticsApplication.getInstance().trackEvent("MainMenuButtons", "Start: " + order + ", " + online, subject.getName());
+
                 startTest(startQuestionId, endQuestionId);
             }
         });
@@ -111,6 +119,7 @@ public class MenuActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://gcweb.drl.pl/is_exam/results.php")));
+                AnalyticsApplication.getInstance().trackEvent("MainMenuButtons", "Stats", "click");
             }
         });
 
@@ -143,6 +152,7 @@ public class MenuActivity extends Activity {
             questionsIDs = Utils.getArray(questionsNumber, startQuestionID, endQuestionID);
 
         intent.putExtra(FinalStrings.QUESTIONS_IDS, questionsIDs);
+
         startActivity(intent);
     }
 
