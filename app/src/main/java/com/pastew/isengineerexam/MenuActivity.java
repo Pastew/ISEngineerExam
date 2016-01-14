@@ -42,7 +42,7 @@ public class MenuActivity extends Activity {
         addCheckBoxListener();
 
         sharedPreferences = getSharedPreferences(FinalStrings.ONLINE_SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        setOnline(((CheckBox)findViewById(R.id.online_checkbox)).isChecked());
+        setOnline(((CheckBox) findViewById(R.id.online_checkbox)).isChecked());
     }
 
     private void addCheckBoxListener() {
@@ -101,17 +101,15 @@ public class MenuActivity extends Activity {
                     return;
                 }
 
-                int startQuestionId = subject.getFirstQuestionId();
-                int endQuestionId = subject.getLastQuestionId();
 
                 String order = ((CheckBox) findViewById(R.id.random_question_order_cb)).isChecked()
                         ? "random" : "ordered";
 
-                String online = ((CheckBox)findViewById(R.id.online_checkbox)).isChecked() ? "online" : "offline";
+                String online = ((CheckBox) findViewById(R.id.online_checkbox)).isChecked() ? "online" : "offline";
 
                 AnalyticsApplication.getInstance().trackEvent("MainMenuButtons", "Start: " + order + ", " + online, subject.getName());
 
-                startTest(startQuestionId, endQuestionId);
+                startTest(subject.getQuestionsIDs());
             }
         });
 
@@ -136,23 +134,26 @@ public class MenuActivity extends Activity {
         });
     }
 
-    private void startTest(int startQuestionID, int endQuestionID) {
-        Intent intent = new Intent(this, TestActivity.class);
+    private void startTest(int[] subjectQuestionsIDs) {
         int questionsNumber = Integer.parseInt( ((TextView)findViewById(R.id.questions_number)).getText().toString() );
         if(questionsNumber < 1 || questionsNumber > 711) {
             Toast.makeText(getApplicationContext(), "Podaj normalną ilość pytań", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int[] questionsIDs;
+        if(questionsNumber > subjectQuestionsIDs.length)
+            questionsNumber = subjectQuestionsIDs.length;
+
         boolean randomOrder = ((CheckBox) findViewById(R.id.random_question_order_cb)).isChecked();
         if(randomOrder)
-            questionsIDs = Utils.getRandomArray(questionsNumber, startQuestionID, endQuestionID);
-        else
-            questionsIDs = Utils.getArray(questionsNumber, startQuestionID, endQuestionID);
+            subjectQuestionsIDs = Utils.shuffleArray(subjectQuestionsIDs);
 
+
+        int[] questionsIDs = new int[questionsNumber];
+        System.arraycopy(subjectQuestionsIDs, 0, questionsIDs, 0, questionsNumber);
+
+        Intent intent = new Intent(this, TestActivity.class);
         intent.putExtra(FinalStrings.QUESTIONS_IDS, questionsIDs);
-
         startActivity(intent);
     }
 

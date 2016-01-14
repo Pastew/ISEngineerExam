@@ -6,23 +6,28 @@ package com.pastew.isengineerexam.data;
 public class Subject {
 
     private String name;
-    private int firstQuestionId, lastQuestionId;
+    private int[] questionsIDs;
 
-    public int getFirstQuestionId() {
-        return firstQuestionId;
-    }
+    public int[] getQuestionsIDs(){ return questionsIDs; };
 
-    public int getLastQuestionId() {
-        return lastQuestionId;
+    public Subject(String name, int[] questionsIDs){
+        this.name = name;
+        this.questionsIDs = questionsIDs;
     }
 
     public Subject(String name, int firstQuestionId, int lastQuestionId) {
         this.name = name;
-        this.firstQuestionId = firstQuestionId;
-        this.lastQuestionId = lastQuestionId;
+
+        questionsIDs = new int[lastQuestionId-firstQuestionId+1];
+        for(int id = firstQuestionId, i=0 ; i < questionsIDs.length ; ++id, ++i)
+            questionsIDs[i] = id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getQuestionsNumber(){
+        return questionsIDs.length;
     }
 }

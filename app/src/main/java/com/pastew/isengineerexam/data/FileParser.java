@@ -32,12 +32,22 @@ public class FileParser {
 
         while( (line = reader.readLine()) != null){
             splitLine = line.split("-");
-
             String name = splitLine[0];
-            int firstQuestionId = Integer.parseInt(splitLine[1]);
-            int lastQuestionId = Integer.parseInt(splitLine[2]);
 
-            subjects.add(new Subject(name, firstQuestionId, lastQuestionId));
+            if(splitLine.length == 3)
+            {
+                int firstQuestionId = Integer.parseInt(splitLine[1]);
+                int lastQuestionId = Integer.parseInt(splitLine[2]);
+                subjects.add(new Subject(name, firstQuestionId, lastQuestionId));
+            }
+            else{
+                String[] questionsIDsString = splitLine[1].split(",");
+                int[] questionsIDs = new int[questionsIDsString.length];
+                for(int i = 0 ; i < questionsIDsString.length ; ++i)
+                    questionsIDs[i] = Integer.parseInt(questionsIDsString[i]);
+
+                subjects.add(new Subject(name, questionsIDs));
+            }
         }
 
         return subjects;

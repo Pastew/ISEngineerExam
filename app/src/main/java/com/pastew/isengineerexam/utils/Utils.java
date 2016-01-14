@@ -48,10 +48,23 @@ public class Utils {
 
         for(int i = 0 ; i < arrayLength ; ++i) {
             arr[i] = left++;
-            Log.i("BUG", "i = " + i + ", item = " + arr[i]);
         }
 
         return arr;
+    }
+
+    public static int[] shuffleArray(int[] ar)
+    {
+        Random rnd = new Random();
+        for (int i = ar.length - 1; i > 0; i--)
+        {
+            int index = rnd.nextInt(i + 1);
+            int a = ar[index];
+            ar[index] = ar[i];
+            ar[i] = a;
+        }
+
+        return ar;
     }
 
     /**

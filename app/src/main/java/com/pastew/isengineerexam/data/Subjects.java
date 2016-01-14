@@ -37,7 +37,7 @@ public class Subjects {
     public int getQuestionsNumber(String subjectName) {
         for(Subject s : subjects){
             if(s.getName().equals(subjectName))
-                return s.getLastQuestionId() - s.getFirstQuestionId() + 1;
+                return s.getQuestionsNumber();
         }
 
         return 10; // That's not a good idea (?)
