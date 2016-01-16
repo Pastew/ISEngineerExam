@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.pastew.isexam.data.Answer;
 import com.pastew.isexam.data.Answers;
 import com.pastew.isexam.data.FileParser;
-import com.pastew.isexam.online.AnswerSender;
+import com.pastew.isexam.online.ServerClient;
 import com.pastew.isexam.utils.Utils;
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class TestActivity extends Activity {
     private int[] questionsIds;
     private int[] scores;
 
-    private AnswerSender answerSender;
+    private ServerClient answerSender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class TestActivity extends Activity {
 
         showQuestion(questionsIds[currentQuestion]);
 
-        answerSender = new AnswerSender(getApplicationContext());
+        answerSender = new ServerClient(getApplicationContext());
     }
 
     @Override

@@ -102,55 +102,60 @@
         android:layout_alignRight="@+id/plus_questions_number"
         android:layout_alignEnd="@+id/plus_questions_number" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="v"
-        android:id="@+id/app_version_tv"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/share_your_answers"
-        android:id="@+id/online_checkbox"
-        android:checked="true"
-        android:layout_above="@+id/textView3"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="37dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/need_internet_dialog"
-        android:id="@+id/textView3"
-        android:layout_above="@+id/stats_button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_your_answers"
+            android:id="@+id/online_checkbox"
+            android:checked="true"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/statistics"
-        android:autoLink="all"
-        android:id="@+id/stats_button"
-        android:layout_alignBottom="@+id/app_version_tv"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/need_internet_dialog"
+            android:id="@+id/textView3" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/your_answers"
-        android:id="@+id/user_answers_button"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/stats_button"
-        android:layout_toEndOf="@+id/stats_button" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/statistics"
+            android:autoLink="all"
+            android:id="@+id/stats_button" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/your_answers"
+            android:id="@+id/user_answers_button" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Aktualizuj odpowiedzi"
+            android:id="@+id/update_answers_button"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="v"
+            android:id="@+id/app_version_tv"
+            android:layout_gravity="right" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.pastew.isexam.data.FileParser;
 import com.pastew.isexam.data.Subject;
 import com.pastew.isexam.data.Subjects;
+import com.pastew.isexam.online.ServerClient;
 import com.pastew.isexam.utils.Utils;
 
 import java.io.IOException;
@@ -130,6 +131,13 @@ public class MenuActivity extends Activity {
                                 Settings.Secure.ANDROID_ID);
 
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(link)));
+            }
+        });
+
+        (findViewById(R.id.update_answers_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ServerClient(getApplicationContext()).downloadFile("http://gcweb.drl.pl/is_exam/Answers.txt");
             }
         });
     }

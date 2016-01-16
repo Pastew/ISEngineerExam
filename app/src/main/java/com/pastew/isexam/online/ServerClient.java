@@ -15,13 +15,15 @@ import com.android.volley.toolbox.Volley;
 import com.pastew.isexam.FinalStrings;
 import com.pastew.isexam.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by Pastew on 2015-12-13.
  */
-public class AnswerSender {
+public class ServerClient {
 
     private final String URL = "http://gcweb.drl.pl/is_exam/save.php";
     private Context context;
@@ -31,7 +33,7 @@ public class AnswerSender {
 
     private RequestQueue requestQueue;
 
-    public AnswerSender(Context context) {
+    public ServerClient(Context context) {
         // Create request queue
         this.context = context;
         
@@ -39,6 +41,45 @@ public class AnswerSender {
                 Settings.Secure.ANDROID_ID);
 
         requestQueue= Volley.newRequestQueue(context);
+    }
+
+    public void downloadFile(String url){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("ANSWER_SENDER", "response: " + response);
+                        String filename = "assets/answer2.txt";
+                        FileOutputStream outputStream;
+
+                        try {
+                            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+                            outputStream.write(response.getBytes());
+                            outputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("ANSWER_SENDER", "error response: " + error.getMessage());
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+
+        // add json array request to the request queue
+        requestQueue.add(stringRequest);
+
     }
 
     public void sendAnswer(final int questionId, String userAnswer, long startTime){
