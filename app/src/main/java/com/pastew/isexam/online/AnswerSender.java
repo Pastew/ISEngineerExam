@@ -1,4 +1,4 @@
-package com.pastew.isengineerexam.online;
+package com.pastew.isexam.online;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,8 +12,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.pastew.isengineerexam.FinalStrings;
-import com.pastew.isengineerexam.R;
+import com.pastew.isexam.FinalStrings;
+import com.pastew.isexam.R;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,6 +1,4 @@
-package com.pastew.isengineerexam.utils;
-
-import android.util.Log;
+package com.pastew.isexam.utils;
 
 import java.util.HashSet;
 import java.util.Random;

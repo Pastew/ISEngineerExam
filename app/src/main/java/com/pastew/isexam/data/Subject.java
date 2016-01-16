@@ -1,4 +1,4 @@
-package com.pastew.isengineerexam.data;
+package com.pastew.isexam.data;
 
 /**
  * Created by Pastew on 2015-12-10.

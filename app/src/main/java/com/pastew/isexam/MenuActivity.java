@@ -1,4 +1,4 @@
-package com.pastew.isengineerexam;
+package com.pastew.isexam;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,10 +15,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pastew.isengineerexam.data.FileParser;
-import com.pastew.isengineerexam.data.Subject;
-import com.pastew.isengineerexam.data.Subjects;
-import com.pastew.isengineerexam.utils.Utils;
+import com.pastew.isexam.data.FileParser;
+import com.pastew.isexam.data.Subject;
+import com.pastew.isexam.data.Subjects;
+import com.pastew.isexam.utils.Utils;
 
 import java.io.IOException;
 import java.util.List;

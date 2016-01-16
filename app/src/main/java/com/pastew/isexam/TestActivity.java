@@ -1,4 +1,4 @@
-package com.pastew.isengineerexam;
+package com.pastew.isexam;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,11 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pastew.isengineerexam.data.Answer;
-import com.pastew.isengineerexam.data.Answers;
-import com.pastew.isengineerexam.data.FileParser;
-import com.pastew.isengineerexam.online.AnswerSender;
-import com.pastew.isengineerexam.utils.Utils;
+import com.pastew.isexam.data.Answer;
+import com.pastew.isexam.data.Answers;
+import com.pastew.isexam.data.FileParser;
+import com.pastew.isexam.online.AnswerSender;
+import com.pastew.isexam.utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;

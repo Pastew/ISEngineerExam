@@ -1,4 +1,4 @@
-package com.pastew.isengineerexam;
+package com.pastew.isexam;
 
 import android.app.Application;
 
@@ -6,7 +6,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.StandardExceptionParser;
 import com.google.android.gms.analytics.Tracker;
-import com.pastew.isengineerexam.online.AnalyticsTrackers;
+import com.pastew.isexam.online.AnalyticsTrackers;
 
 /**
  * Created by Pastew on 2016-01-11.

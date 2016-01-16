@@ -1,4 +1,4 @@
-package com.pastew.isengineerexam.online;
+package com.pastew.isexam.online;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import com.google.android.gms.analytics.Tracker;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.pastew.isengineerexam.R;
+import com.pastew.isexam.R;
 
 /**
  * A collection of Google Analytics trackers. Fetch the tracker you need using

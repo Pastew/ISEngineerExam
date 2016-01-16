@@ -1,4 +1,4 @@
-package com.pastew.isengineerexam;
+package com.pastew.isexam;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

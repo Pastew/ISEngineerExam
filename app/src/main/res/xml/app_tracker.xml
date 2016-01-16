@@ -9,8 +9,8 @@
     <string name="ga_sampleFrequency">100.0</string>
     <bool name="ga_reportUncaughtExceptions">true</bool>
 
-    <screenName name="com.pastew.isengineerexam.MenuActivity">MenuActivity</screenName>
-    <screenName name="com.pastew.isengineerexam.TestActivity">TestActivity</screenName>
-    <screenName name="com.pastew.isengineerexam.ResultsActivity">ResultsActivity</screenName>
+    <screenName name="com.pastew.isexam.MenuActivity">MenuActivity</screenName>
+    <screenName name="com.pastew.isexam.TestActivity">TestActivity</screenName>
+    <screenName name="com.pastew.isexam.ResultsActivity">ResultsActivity</screenName>
 
 </resources>
