@@ -1,21 +1,26 @@
 package com.pastew.isexam;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pastew.isexam.data.Answer;
 import com.pastew.isexam.data.Answers;
 import com.pastew.isexam.data.FileParser;
+import com.pastew.isexam.favourites.FavouritesQuestions;
 import com.pastew.isexam.online.AnswerSender;
 import com.pastew.isexam.utils.Utils;
 
@@ -33,6 +38,9 @@ public class TestActivity extends Activity {
     private ImageView questionView, answerAView, answerBView, answerCView;
     private List<View> answersViewList;
 
+    FavouritesQuestions favouritesQuestions;
+    private Switch favSwitch;
+
     private int currentQuestion;
     private long questionStartTime;
     private Answers answers;
@@ -47,6 +55,8 @@ public class TestActivity extends Activity {
         super.onCreate(savedInstanceState);
         initSounds();
         loadAllAnswers();
+
+        favouritesQuestions = new FavouritesQuestions(getSharedPreferences(FinalStrings.FAVOURITE_SHARED_PREFERENCES, Context.MODE_PRIVATE));
 
         setContentView(R.layout.activity_test);
         setupUI();
@@ -147,13 +157,23 @@ public class TestActivity extends Activity {
         findViewById(R.id.main_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentQuestion >= questionsIds.length)
+                addQuestionToFavouritesIfNeeded(questionsIds[currentQuestion]);
+
+                if (currentQuestion+1 >= questionsIds.length)
                     endTest();
                 else
-                    showQuestion(questionsIds[currentQuestion]);
+                    showQuestion(questionsIds[++currentQuestion]);
             }
         });
 
+        favSwitch = (Switch) findViewById(R.id.favourite_switch);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        addQuestionToFavouritesIfNeeded(questionsIds[currentQuestion]);
+        super.onBackPressed();
     }
 
     View.OnClickListener answerClickListener = new View.OnClickListener() {
@@ -193,8 +213,6 @@ public class TestActivity extends Activity {
 
             answerSender.sendAnswer(questionsIds[currentQuestion], answer.getString(), questionStartTime);
 
-            currentQuestion++;
-
             findViewById(R.id.main_layout).setClickable(true);
 
             /* // delay instead of click for next question
@@ -208,6 +226,13 @@ public class TestActivity extends Activity {
             */
         }
     };
+
+    private void addQuestionToFavouritesIfNeeded(int questionId) {
+        if(favSwitch.isChecked())
+            favouritesQuestions.addQuestionToFavourites(questionId);
+        else
+            favouritesQuestions.removeQuestionFromFavourites(questionId);
+    }
 
     private void updateScoreTextView() {
         ((TextView) findViewById(R.id.score_tv)).setText(Integer.toString(Utils.getScore(scores)));
@@ -278,6 +303,8 @@ public class TestActivity extends Activity {
         }
 
         questionStartTime = System.currentTimeMillis();
+
+        favSwitch.setChecked(favouritesQuestions.isQuestionFavourite(questionsIds[currentQuestion]));
     }
 
     /**

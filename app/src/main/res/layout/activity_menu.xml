@@ -153,4 +153,13 @@
         android:layout_toRightOf="@+id/stats_button"
         android:layout_toEndOf="@+id/stats_button" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ulubione"
+        android:id="@+id/favourites_test_button"
+        android:layout_below="@+id/start_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

@@ -73,6 +73,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ulubione"
+        android:id="@+id/favourite_switch"
+        android:layout_below="@+id/questionID"
+        android:layout_alignLeft="@+id/unknown_answer_dialog"
+        android:layout_alignStart="@+id/unknown_answer_dialog"
+        android:checked="false" />
+
 </RelativeLayout>
 
 

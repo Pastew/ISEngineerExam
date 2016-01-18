@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.pastew.isexam.data.FileParser;
 import com.pastew.isexam.data.Subject;
 import com.pastew.isexam.data.Subjects;
+import com.pastew.isexam.favourites.FavouritesQuestions;
 import com.pastew.isexam.utils.Utils;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ import java.util.List;
 
 public class MenuActivity extends Activity {
 
+    FavouritesQuestions favouritesQuestions;
     private SharedPreferences sharedPreferences;
 
     public final int QUESTION_INCREMENT = 5;
@@ -42,6 +44,7 @@ public class MenuActivity extends Activity {
         addCheckBoxListener();
 
         sharedPreferences = getSharedPreferences(FinalStrings.ONLINE_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        favouritesQuestions = new FavouritesQuestions(getSharedPreferences(FinalStrings.FAVOURITE_SHARED_PREFERENCES, Context.MODE_PRIVATE));
         setOnline(((CheckBox) findViewById(R.id.online_checkbox)).isChecked());
     }
 
@@ -101,7 +104,6 @@ public class MenuActivity extends Activity {
                     return;
                 }
 
-
                 String order = ((CheckBox) findViewById(R.id.random_question_order_cb)).isChecked()
                         ? "random" : "ordered";
 
@@ -116,7 +118,8 @@ public class MenuActivity extends Activity {
         (findViewById(R.id.stats_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://gcweb.drl.pl/is_exam/results.php")));
+                String link = "http://gcweb.drl.pl/is_exam/stats.php?user_id=" + getUserID();
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(link)));
                 AnalyticsApplication.getInstance().trackEvent("MainMenuButtons", "Stats", "click");
             }
         });
@@ -124,16 +127,27 @@ public class MenuActivity extends Activity {
         (findViewById(R.id.user_answers_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String link =
-                        "http://gcweb.drl.pl/is_exam/results.php?user_id="
-                                + Settings.Secure.getString(getApplicationContext().getContentResolver(),
-                                Settings.Secure.ANDROID_ID);
-
+                String link = "http://gcweb.drl.pl/is_exam/results.php?user_id=" + getUserID();
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(link)));
+                AnalyticsApplication.getInstance().trackEvent("MainMenuButtons", "Answers", "click");
+            }
+        });
+
+        (findViewById(R.id.favourites_test_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AnalyticsApplication.getInstance().trackEvent("MainMenuButtons", "Favourites", "click");
+                if (favouritesQuestions.getFavouritesQuestionsNumber() > 0)
+                    startTest(favouritesQuestions.getFavouritesQuestions());
+                else
+                    Toast.makeText(MenuActivity.this, "Nie masz ulubionych pytań", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    public String getUserID(){
+        return Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
     private void startTest(int[] subjectQuestionsIDs) {
         int questionsNumber = Integer.parseInt( ((TextView)findViewById(R.id.questions_number)).getText().toString() );
         if(questionsNumber < 1 || questionsNumber > 711) {

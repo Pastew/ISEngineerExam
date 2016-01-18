@@ -1,5 +1,6 @@
 ﻿Całość-1-711
-Poprawione odpowiedzi-367,80,94,144,204,209,226,229,244,365,368,381,383,385,386,506,527,548,674,686
+Poprawione odpowiedzi 2.-332,548,680,338,339
+Poprawione odpowiedzi 1.-367,80,94,144,204,209,226,229,244,365,368,381,383,385,386,506,527,548,674,686
 Wstęp do Programowania-1-30
 Ochrona Środowiska-31-50
 BHP-51-57
