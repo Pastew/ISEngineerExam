@@ -23,7 +23,6 @@ import java.util.Map;
  */
 public class AnswerSender {
 
-    private final String URL = "http://gcweb.drl.pl/is_exam/save.php";
     private Context context;
 
     private String user_id, answer;
@@ -48,7 +47,7 @@ public class AnswerSender {
 
         time = System.currentTimeMillis() - startTime;
         answer = userAnswer;
-
+        String URL = context.getString(R.string.url) + "/save.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override

@@ -23,5 +23,7 @@
     <string name="exit">Wróć do menu</string>
     <string name="retake_test">Popraw złe odpowiedzi</string>
 
+    <string name="url">http://is-exam.axartmedia.com</string>
+
     <string name="online_pref">online_pref</string>
 </resources>

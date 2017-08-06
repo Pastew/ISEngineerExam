@@ -49,7 +49,7 @@ public class MenuActivity extends Activity {
     }
 
     private void addCheckBoxListener() {
-        CheckBox onlineCheckbox = ( CheckBox ) findViewById( R.id.online_checkbox );
+        CheckBox onlineCheckbox = findViewById(R.id.online_checkbox);
         onlineCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -82,7 +82,7 @@ public class MenuActivity extends Activity {
         (findViewById(R.id.select_all_questions_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Spinner subjectSpinner = (Spinner) findViewById(R.id.subject_spinner);
+                Spinner subjectSpinner = findViewById(R.id.subject_spinner);
                 String subjectName = subjectSpinner.getSelectedItem().toString();
                 int questionsNumberForSelectedSubject = subjects.getQuestionsNumber(subjectName);
 
@@ -95,7 +95,7 @@ public class MenuActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                Spinner subjectSpinner = (Spinner) findViewById(R.id.subject_spinner);
+                Spinner subjectSpinner = findViewById(R.id.subject_spinner);
                 String selectedSubject = subjectSpinner.getSelectedItem().toString();
                 Subject subject = subjects.getSubject(selectedSubject);
 
@@ -118,7 +118,7 @@ public class MenuActivity extends Activity {
         (findViewById(R.id.stats_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String link = "http://gcweb.drl.pl/is_exam/stats.php?user_id=" + getUserID();
+                String link = getString(R.string.url) + "/stats.php?user_id=" + getUserID();
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(link)));
                 AnalyticsApplication.getInstance().trackEvent("MainMenuButtons", "Stats", "click");
             }
@@ -127,7 +127,7 @@ public class MenuActivity extends Activity {
         (findViewById(R.id.user_answers_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String link = "http://gcweb.drl.pl/is_exam/results.php?user_id=" + getUserID();
+                String link = getString(R.string.url) + "/results.php?user_id=" + getUserID();
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(link)));
                 AnalyticsApplication.getInstance().trackEvent("MainMenuButtons", "Answers", "click");
             }
@@ -145,21 +145,22 @@ public class MenuActivity extends Activity {
         });
     }
 
-    public String getUserID(){
+    public String getUserID() {
         return Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     }
+
     private void startTest(int[] subjectQuestionsIDs) {
-        int questionsNumber = Integer.parseInt( ((TextView)findViewById(R.id.questions_number)).getText().toString() );
-        if(questionsNumber < 1 || questionsNumber > 711) {
+        int questionsNumber = Integer.parseInt(((TextView) findViewById(R.id.questions_number)).getText().toString());
+        if (questionsNumber < 1 || questionsNumber > 711) { //TODO hardcode
             Toast.makeText(getApplicationContext(), "Podaj normalną ilość pytań", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(questionsNumber > subjectQuestionsIDs.length)
+        if (questionsNumber > subjectQuestionsIDs.length)
             questionsNumber = subjectQuestionsIDs.length;
 
         boolean randomOrder = ((CheckBox) findViewById(R.id.random_question_order_cb)).isChecked();
-        if(randomOrder)
+        if (randomOrder)
             subjectQuestionsIDs = Utils.shuffleArray(subjectQuestionsIDs);
 
 
@@ -172,13 +173,13 @@ public class MenuActivity extends Activity {
     }
 
     private void addQuestionsNumber(int number) {
-        TextView questionsNumberTV = (TextView) findViewById(R.id.questions_number);
+        TextView questionsNumberTV = findViewById(R.id.questions_number);
 
         int questionsNumber;
         try {
             String questionsNumberString = questionsNumberTV.getText().toString();
             questionsNumber = Integer.parseInt(questionsNumberString);
-        } catch( Exception e){
+        } catch (Exception e) {
             questionsNumber = 0;
         }
 
