@@ -8,8 +8,8 @@ android {
         applicationId "com.pastew.isexam"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 10
-        versionName "1.95"
+        versionCode 12
+        versionName "1.97"
     }
     buildTypes {
         release {
