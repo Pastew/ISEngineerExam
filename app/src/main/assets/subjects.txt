@@ -24,3 +24,4 @@ Inżynieria Internetu-606-635
 Programowanie Równoległe-636-655
 Metoda Elementów Skończonych-656-683
 Wymiana Ciepła i Masy-684-711
+Nowa fikcyjna kategoria-712-713
