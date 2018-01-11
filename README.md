@@ -24,7 +24,7 @@ Bo jest dużo dziwnych wzorów których nie da się zapisać jako tekst.
 
 ### Jak dodać nową kategorię z pytaniami do aplikacji
 Żeby dodać nową kategorię z pytaniami do aplikacji trzeba zmodyfikować 3 miejsca:
-1. Do folderu *assets* należy dodać 4 obrazki dla każdego pytania: img_712_p.jpg - obrazek z pytaniem, img_712_a.jpg, img_712_b.jpg, img_712_c.jpg - obrazki z odpowiedziami a,b,c.
+1. Do folderu *assets* należy dodać 4 obrazki dla każdego pytania: img_712_p.jpg - obrazek z pytaniem, img_712_a.jpg, img_712_b.jpg, img_712_c.jpg - obrazki z odpowiedziami a,b,c. Uwaga - jpg skompresuj żeby zajmowały jak najmniej miejsca. Zadbaj żeby miały podobny rozmiar jak dotychczasowe pytania.
 2. W pliku *subjects.txt* dopisać nową kategorię, z zakresem pytań (obustronnie włącznie)
 3. W pliku *answers.txt* dopisać odpowiedzi.
 4. I tyle. Nie trzeba nic zmieniać w kodzie programu.
