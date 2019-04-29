@@ -5,7 +5,7 @@
 *Aplikacja jest kompletna, z jej pomocą zdasz egzamin spokojnie na > 90%.* - przynajmniej na rok 2015. Jeśli pojawiają się nowe pytania - to dajcie znać
 
 * Aplikację można pobrać tutaj: https://play.google.com/store/apps/details?id=com.pastew.isexam&hl=pl
-* Odpowiedzi można znaleść tutaj: http://is-exam.axartmedia.com/results.php
+* Odpowiedzi można znaleźć tutaj: http://is-exam.axartmedia.com/results.php
 * Statystyki można obejrzeć tutaj: http://is-exam.axartmedia.com/stats.php
 
 Hint: Jeśli nie masz smartfona z Androidem to ściągnij Bluestacks na PC i tam zainstaluj aplikację.
